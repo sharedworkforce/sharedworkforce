@@ -9,7 +9,7 @@ class Hci::HitRequest
   end
   
   def invoke
-    RestClient.post("#{@http_end_point}/hits", {:name => @hit.name, :resource_id => @resource_id.to_s, :api_key=>Hci::Client.api_key}.to_json, :content_type => :json, :accept => :json)
+    RestClient.post("#{@http_end_point}/hits", {:hit=>@hit.to_hash.merge(:resource_id=>@resource_id.to_s), :api_key=>Hci::Client.api_key}.to_json, :content_type => :json, :accept => :json)
   end
   
 end

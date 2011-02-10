@@ -46,6 +46,17 @@ class Hci::Hit
     hit_request.invoke
   end
   
+  def to_hash
+    {
+      :name=>name,
+      :directions => directions,
+      :image_url => image_url,
+      :multiple_choice_answers => multiple_choice_answers,
+      :total_responses_required => total_responses_required,
+      :unique => unique
+    }
+  end
+  
   # Callbacks
   
   def on_completion(&block)
