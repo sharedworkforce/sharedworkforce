@@ -34,7 +34,7 @@ class Hci::Hit
   attr_accessor :directions
   attr_accessor :image_url
   attr_accessor :answer_options
-  attr_accessor :total_responses_required
+  attr_accessor :responses_required
   attr_accessor :unique # whether hits with the same resource id and name should be overwritten
   
   def unique
@@ -52,7 +52,7 @@ class Hci::Hit
       :directions => directions,
       :image_url => image_url,
       :answer_options => answer_options,
-      :total_responses_required => total_responses_required,
+      :responses_required => responses_required,
       :unique => unique
     }
   end
