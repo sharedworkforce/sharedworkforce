@@ -8,7 +8,7 @@ describe "HitRequest" do
 
       h.directions = "Please classify this photo by choosing the appropriate tickboxes."
       h.image_url = "http://www.google.com/logo.png"
-      h.multiple_choice_answers = ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways', 'Contains more than one person in the foreground', 'Has people in the background', 'Contains children']
+      h.answer_options = ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways', 'Contains more than one person in the foreground', 'Has people in the background', 'Contains children']
       h.total_responses_required = 3
 
       h.on_completion do |result|
@@ -31,7 +31,7 @@ describe "HitRequest" do
         'resource_id'=>'1234',
         'directions'=>"Please classify this photo by choosing the appropriate tickboxes.",
         'image_url'=>"http://www.google.com/logo.png",
-        'multiple_choice_answers'=> ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways', 'Contains more than one person in the foreground', 'Has people in the background', 'Contains children'],
+        'answer_options'=> ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways', 'Contains more than one person in the foreground', 'Has people in the background', 'Contains children'],
         'total_responses_required'=>3,
         'unique'=>true
       }, :api_key=>'test-api-key'}).should have_been_made.once

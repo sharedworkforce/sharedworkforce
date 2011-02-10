@@ -33,7 +33,7 @@ class Hci::Hit
   attr_accessor :name
   attr_accessor :directions
   attr_accessor :image_url
-  attr_accessor :multiple_choice_answers
+  attr_accessor :answer_options
   attr_accessor :total_responses_required
   attr_accessor :unique # whether hits with the same resource id and name should be overwritten
   
@@ -51,7 +51,7 @@ class Hci::Hit
       :name=>name,
       :directions => directions,
       :image_url => image_url,
-      :multiple_choice_answers => multiple_choice_answers,
+      :answer_options => answer_options,
       :total_responses_required => total_responses_required,
       :unique => unique
     }
