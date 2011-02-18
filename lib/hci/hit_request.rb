@@ -10,7 +10,7 @@ module Hci
     end
   
     def invoke
-      RestClient.post("#{@http_end_point}/hits", {:hit=>@hit.to_hash.merge(:resource_id=>@resource_id.to_s), :api_key=>Client.api_key}.to_json, :content_type => :json, :accept => :json)
+      RestClient.post("#{@http_end_point}/hits", {:hit=>@hit.to_hash.merge(:resource_id=>@resource_id.to_s, :callback_url=>Client.callback_url), :api_key=>Client.api_key}.to_json, :content_type => :json, :accept => :json)
     end
   
   end

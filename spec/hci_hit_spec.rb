@@ -82,6 +82,20 @@ describe "Hit" do
     Hci::Hit.find("Check profile text").name.should == "Check profile text"
     
   end
+  
+  it "should raise a ConfigurationError if a callback host is not set" do
+    Hci::Client.callback_host = nil
+    lambda {
+      Hci::Hit.define("Approve photo") { }
+    }.should raise_error Hci::ConfigurationError
+  end
+  
+  it "should raise a ConfigurationError if an API key is not set" do
+    Hci::Client.api_key = nil
+    lambda {
+      Hci::Hit.define("Approve photo") { }
+    }.should raise_error Hci::ConfigurationError
+  end
 end
 
 

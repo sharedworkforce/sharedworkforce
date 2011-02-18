@@ -7,7 +7,7 @@ module Hci
 
     def call(env)
       puts "Called with #{env.inspect}"
-      if env["PATH_INFO"] =~ /^\/hci_hit_result/
+      if env["PATH_INFO"] =~ /^\/#{Client.callback_path}/
         process_request(env)
       else
         @app.call(env)
