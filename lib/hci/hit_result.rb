@@ -2,13 +2,13 @@ module Hci
   class HitResult
    
     attr_accessor :callback_params
-    attr_accessor :answer
+    attr_accessor :responses
     attr_accessor :name
     attr_accessor :status
   
     def initialize(params)
       self.callback_params = params['callback_params']
-      self.answer = params['answer']
+      self.responses = params['responses']
       self.name = params['name']
     end
   

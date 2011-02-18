@@ -12,14 +12,14 @@ describe "HitResult" do
     hit = Hci::Hit.define("Approve photo") do |h|
       
       h.on_completion do |result|
-        if result.answer == 'yes'
+        if result.responses.first == 'yes'
           resources[result.callback_params['resource_id']].approved = true
         end
       end
       
     end
     
-    Hci::HitResult.new({'callback_params'=>{'resource_id' => '2'}, 'answer'=>'yes', 'name'=>"Approve photo"}).process!
+    Hci::HitResult.new({'callback_params'=>{'resource_id' => '2'}, 'responses'=>['yes'], 'name'=>"Approve photo"}).process!
     
     resources['1'].approved.should == false
     resources['2'].approved.should == true
