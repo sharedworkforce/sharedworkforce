@@ -1,3 +1,4 @@
+require 'hci/exceptions'
 require 'hci/client'
 require 'hci/version'
 require 'hci/hit'
