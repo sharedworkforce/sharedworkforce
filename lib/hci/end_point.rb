@@ -19,9 +19,7 @@ module Hci
 
     def process_request(env)
       req = Rack::Request.new(env)
-      params = req.params
-    
-      Hci::HitResult.new(params).process!
+      Hci::HitResult.new(JSON.parse(req.body.read)).process!
     
       [ 200,
         { "Content-Type"   => "text/html",
