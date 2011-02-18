@@ -1,13 +1,13 @@
 module Hci
   class HitResult
    
-    attr_accessor :resource_id
+    attr_accessor :callback_params
     attr_accessor :answer
     attr_accessor :name
     attr_accessor :status
   
     def initialize(params)
-      self.resource_id = params['resource_id'].to_s
+      self.callback_params = params['callback_params']
       self.answer = params['answer']
       self.name = params['name']
     end
