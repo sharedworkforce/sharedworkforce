@@ -68,8 +68,8 @@ describe "Hit" do
   it "should request a hit" do
     
     hit = Hci::Hit.define("Approve photo") { }
-    hit.should_receive(:request).with(123)
-    Hci::Hit.request("Approve photo", 123)
+    hit.should_receive(:request).with(:request_id=>'123')
+    Hci::Hit.request("Approve photo", :request_id=>'123')
     
   end
   

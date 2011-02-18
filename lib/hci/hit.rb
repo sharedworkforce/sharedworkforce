@@ -45,8 +45,8 @@ module Hci
       @unique ||= true
     end
   
-    def request(resource_id)
-      hit_request = HitRequest.new(self, resource_id)
+    def request(options)
+      hit_request = HitRequest.new(self, options)
       hit_request.invoke
     end
   
