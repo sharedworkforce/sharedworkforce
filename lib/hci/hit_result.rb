@@ -8,7 +8,7 @@ module Hci
   
     def initialize(params)
       self.callback_params = params['callback_params']
-      self.responses = params['responses']
+      self.responses = HitResponse.create_collection_from_array(params['responses'])
       self.name = params['name']
     end
   
