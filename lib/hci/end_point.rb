@@ -19,7 +19,10 @@ module Hci
 
     def process_request(env)
       req = Rack::Request.new(env)
-      Hci::HitResult.new(JSON.parse(req.body.read)).process!
+      body = JSON.parse(req.body.read)
+      puts "processing hit callback"
+      puts body.inspect
+      Hci::HitResult.new(body).process!
     
       [ 200,
         { "Content-Type"   => "text/html",

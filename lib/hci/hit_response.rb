@@ -8,7 +8,7 @@ module Hci
     attr_accessor :answer
     
     def initialize(params)
-      @answer = params[:answer]
+      @answer = params['answer']
     end
   
   end

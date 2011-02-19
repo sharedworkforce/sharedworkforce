@@ -19,7 +19,7 @@ describe "HitResult" do
       
     end
     
-    Hci::HitResult.new({'callback_params'=>{'resource_id' => '2'}, 'responses'=>[{:answer=>'yes'}], 'name'=>"Approve photo"}).process!
+    Hci::HitResult.new({'callback_params'=>{'resource_id' => '2'}, 'responses'=>[{'answer'=>'yes'}], 'name'=>"Approve photo"}).process!
     
     resources['1'].approved.should == false
     resources['2'].approved.should == true
