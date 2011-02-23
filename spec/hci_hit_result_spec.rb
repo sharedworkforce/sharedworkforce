@@ -27,4 +27,9 @@ describe "HitResult" do
     
   end
   
+  it "should collect the answers" do  
+    r = Hci::HitResult.new({'callback_params'=>{'resource_id' => '2'}, 'responses'=>[{'answer'=>'yes'}, {'answer'=>'no'}, {'answer'=>'yes'}], 'name'=>"Approve photo"})
+    r.answers.should == ['yes', 'no', 'yes']
+  end
+  
 end

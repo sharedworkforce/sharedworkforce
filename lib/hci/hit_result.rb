@@ -11,7 +11,11 @@ module Hci
       self.responses = HitResponse.create_collection_from_array(params['responses'])
       self.name = params['name']
     end
-  
+    
+    def answers
+      responses.map(&:answer).flatten
+    end
+    
     def process!
       if hit = Hit.find(name)
         hit.complete!(self)
