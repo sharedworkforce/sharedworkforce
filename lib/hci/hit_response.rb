@@ -5,11 +5,12 @@ module Hci
       ary.collect {|r| HitResponse.new(r) }
     end
   
-    attr_accessor :answer, :callback_params
+    attr_accessor :answer, :callback_params, :username
     
     def initialize(params)
       @answer = params['answer']
       @callback_params = params['callback_params']
+      @username = params['username']
     end
   
   end

@@ -6,4 +6,10 @@ describe "HitResponse" do
     r[0].answer.should == "answer 1"
     r[1].answer.should == "answer 2"
   end
+  
+  it "should accept and store a username" do
+    r = Hci::HitResponse.create_collection_from_array([{'answer'=>'answer 1', 'username'=>'bilbo'}, {'answer'=>'answer 2', 'username'=>'frodo'}])
+    r[0].username.should == "bilbo"
+    r[1].username.should == "frodo"
+  end
 end
