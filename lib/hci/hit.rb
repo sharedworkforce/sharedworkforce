@@ -39,10 +39,10 @@ module Hci
     attr_accessor :answer_options
     attr_accessor :answer_type
     attr_accessor :responses_required
-    attr_accessor :unique # whether hits with the same resource id and name should be overwritten
-  
-    def unique
-      @unique ||= true
+    attr_accessor :replace # whether hits with the same resource id and name should be overwritten
+
+    def replace
+      @replace ||= false
     end
   
     def request(options)
@@ -57,9 +57,9 @@ module Hci
         :image_url => image_url,
         :answer_options => answer_options,
         :responses_required => responses_required,
-        :unique => unique,
         :answer_type => answer_type.to_s,
-        :callback_url => Client.callback_url
+        :callback_url => Client.callback_url,
+        :replace => replace
       }
     end
   

@@ -11,7 +11,8 @@ describe "HitRequest" do
       h.answer_type = "tags"
       h.answer_options = ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways', 'Contains more than one person in the foreground', 'Has people in the background', 'Contains children']
       h.responses_required = 3
-
+      h.replace = false
+      
       h.on_completion do |result|
         puts "Complete"
       end
@@ -33,10 +34,10 @@ describe "HitRequest" do
         'image_url'=>"http://www.google.com/logo.png",
         'answer_options'=> ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways', 'Contains more than one person in the foreground', 'Has people in the background', 'Contains children'],
         'responses_required'=>3,
-        'unique'=>true,
         'answer_type'=>'tags',
         'callback_url'=>"#{Hci::Client.callback_host}/hci_hit_result",
-        'callback_params'=>{'resource_id'=>'1234'}
+        'callback_params'=>{'resource_id'=>'1234'},
+        'replace'=>false
       }, :api_key=>'test-api-key'}).should have_been_made.once
     
   end
@@ -72,10 +73,10 @@ describe "HitRequest" do
         'image_url'=>"http://www.example.com/image.jpg",
         'answer_options'=> ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways', 'Contains more than one person in the foreground', 'Has people in the background', 'Contains children'],
         'responses_required'=>3,
-        'unique'=>true,
         'answer_type'=>'tags',
         'callback_url'=>"#{Hci::Client.callback_host}/hci_hit_result",
-        'callback_params'=>{'resource_id'=>'1234'}
+        'callback_params'=>{'resource_id'=>'1234'},
+        'replace'=>false,
       }, :api_key=>'test-api-key'}).should have_been_made.once
   end
   
