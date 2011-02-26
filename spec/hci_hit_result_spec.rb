@@ -32,4 +32,9 @@ describe "HitResult" do
     r.answers.should == ['yes', 'no', 'yes']
   end
   
+  it "should collect the usernames" do  
+    r = Hci::HitResult.new({'callback_params'=>{'resource_id' => '2'}, 'responses'=>[{'answer'=>'yes', 'username'=>'bilbo'}, {'answer'=>'no', 'username'=>'frodo'}, {'answer'=>'yes', 'username'=>'sam'}], 'name'=>"Approve photo"})
+    r.usernames.should == ['bilbo', 'frodo', 'sam']
+  end
+  
 end
