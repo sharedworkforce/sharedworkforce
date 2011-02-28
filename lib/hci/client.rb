@@ -10,6 +10,10 @@ module Hci
       attr_accessor :http_end_point
       attr_accessor :callback_host
       attr_accessor :callback_path
+      
+      def version
+        Hci::VERSION
+      end
     
       def load!
         Dir[File.join(load_path, "*.rb")].each do |file|

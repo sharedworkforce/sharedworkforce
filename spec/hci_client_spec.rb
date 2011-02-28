@@ -7,6 +7,10 @@ describe "Client" do
     
     Hci::Hit.find("Approve photo").should_not == nil
   end
+  
+  it "should return the current version number" do
+    Hci::Client.version.should == Hci::VERSION
+  end
 end
 
 
