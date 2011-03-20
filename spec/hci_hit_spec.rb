@@ -66,11 +66,18 @@ describe "Hit" do
   end
   
   it "should request a hit" do
-    
+    hit = Hci::Hit.define("Approve photo") { }
+    hit.should_receive(:request).with(:request_id=>'123')
+    Hci::Hit.request("Approve photo", :request_id=>'123')
+  end
+  
+  it "should cancel a hit" do
     hit = Hci::Hit.define("Approve photo") { }
     hit.should_receive(:request).with(:request_id=>'123')
     Hci::Hit.request("Approve photo", :request_id=>'123')
     
+    hit.should_receive(:cancel).with(:request_id=>'123')
+    Hci::Hit.cancel("Approve photo", :request_id=>'123')
   end
   
   it "should find a hit" do

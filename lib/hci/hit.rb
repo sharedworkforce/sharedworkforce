@@ -19,8 +19,12 @@ module Hci
         self.hits[name] = hit
       end
     
-      def request(name, resource_id)
-        @hits[name].request(resource_id)
+      def request(name, options)
+        @hits[name].request(options)
+      end
+      
+      def cancel(name, options)
+        @hits[name].cancel(options)
       end
     
       def find(name)
@@ -47,7 +51,12 @@ module Hci
   
     def request(options)
       hit_request = HitRequest.new(self, options)
-      hit_request.invoke
+      hit_request.create
+    end
+    
+    def cancel(options)
+      hit_request = HitRequest.new(self, options)
+      hit_request.cancel
     end
   
     def to_hash

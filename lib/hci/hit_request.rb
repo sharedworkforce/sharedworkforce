@@ -9,9 +9,19 @@ module Hci
       @http_end_point = Client.http_end_point
     end
   
-    def invoke
-      RestClient.post("#{@http_end_point}/hits", {:hit=>@hit.to_hash.merge(@params).merge(:callback_url=>Client.callback_url), :api_key=>Client.api_key}.to_json, :content_type => :json, :accept => :json)
+    def create
+      RestClient.post("#{@http_end_point}/hits", *request_params)
     end
-  
+    
+    def cancel
+      RestClient.post("#{@http_end_point}/hits/cancel", *request_params)
+    end
+    
+    private
+    
+    def request_params
+      [{:hit=>@hit.to_hash.merge(@params).merge(:callback_url=>Client.callback_url), :api_key=>Client.api_key}.to_json, :content_type => :json, :accept => :json]
+    end
+    
   end
 end
