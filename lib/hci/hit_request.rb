@@ -20,7 +20,7 @@ module Hci
     private
     
     def request_params
-      [{:hit=>@hit.to_hash.merge(@params).merge(:callback_url=>Client.callback_url), :api_key=>Client.api_key}.to_json, :content_type => :json, :accept => :json]
+      [{:hit=>@hit.to_hash.merge(@params).merge(:callback_url=>Client.callback_url), :api_key=>Client.api_key}.to_json, {:content_type => :json, :accept => :json}]
     end
     
   end
