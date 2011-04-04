@@ -1,4 +1,4 @@
-module Hci
+module SharedWorkforce
   VERSION = "0.0.2"
 
 end

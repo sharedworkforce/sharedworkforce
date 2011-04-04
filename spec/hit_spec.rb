@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 describe "Hit" do
   it "should define a hit" do
     
-    Hci::Hit.define "Approve photo" do |h|
+    SharedWorkforce::Hit.define "Approve photo" do |h|
       
       h.directions = "Please classify this photo by choosing the appropriate tickboxes."
       h.image_url = "http://www.google.com/logo.png"
@@ -20,7 +20,7 @@ describe "Hit" do
 
     end
     
-    Hci::Hit.hits.first[1].directions.should == "Please classify this photo by choosing the appropriate tickboxes."
+    SharedWorkforce::Hit.hits.first[1].directions.should == "Please classify this photo by choosing the appropriate tickboxes."
     
   end
   
@@ -28,7 +28,7 @@ describe "Hit" do
     
     object = OpenStruct.new(:test=>nil)
     
-    hit = Hci::Hit.define "Approve photo" do |h|
+    hit = SharedWorkforce::Hit.define "Approve photo" do |h|
       
       h.on_completion do |result|
         object.test = "Complete"
@@ -45,7 +45,7 @@ describe "Hit" do
     
     object = OpenStruct.new(:test=>nil)
     
-    hit = Hci::Hit.define "Approve photo" do |h|
+    hit = SharedWorkforce::Hit.define "Approve photo" do |h|
       
       h.on_failure do |result|
         object.test = "Failed"
@@ -60,48 +60,48 @@ describe "Hit" do
   
   it "should not raise an error if there is no callback defined" do
     lambda {
-      hit = Hci::Hit.define("Approve photo") { }
+      hit = SharedWorkforce::Hit.define("Approve photo") { }
       hit.fail!({})
     }.should_not raise_error
   end
   
   it "should request a hit" do
-    hit = Hci::Hit.define("Approve photo") { }
+    hit = SharedWorkforce::Hit.define("Approve photo") { }
     hit.should_receive(:request).with(:request_id=>'123')
-    Hci::Hit.request("Approve photo", :request_id=>'123')
+    SharedWorkforce::Hit.request("Approve photo", :request_id=>'123')
   end
   
   it "should cancel a hit" do
-    hit = Hci::Hit.define("Approve photo") { }
+    hit = SharedWorkforce::Hit.define("Approve photo") { }
     hit.should_receive(:request).with(:request_id=>'123')
-    Hci::Hit.request("Approve photo", :request_id=>'123')
+    SharedWorkforce::Hit.request("Approve photo", :request_id=>'123')
     
     hit.should_receive(:cancel).with(:request_id=>'123')
-    Hci::Hit.cancel("Approve photo", :request_id=>'123')
+    SharedWorkforce::Hit.cancel("Approve photo", :request_id=>'123')
   end
   
   it "should find a hit" do
-    Hci::Hit.define("Approve photo") { }
-    Hci::Hit.define("Check profile text") { }
-    Hci::Hit.define("Check content") { }
+    SharedWorkforce::Hit.define("Approve photo") { }
+    SharedWorkforce::Hit.define("Check profile text") { }
+    SharedWorkforce::Hit.define("Check content") { }
     
     
-    Hci::Hit.find("Check profile text").name.should == "Check profile text"
+    SharedWorkforce::Hit.find("Check profile text").name.should == "Check profile text"
     
   end
   
   it "should raise a ConfigurationError if a callback host is not set" do
-    Hci::Client.callback_host = nil
+    SharedWorkforce::Client.callback_host = nil
     lambda {
-      Hci::Hit.define("Approve photo") { }
-    }.should raise_error Hci::ConfigurationError
+      SharedWorkforce::Hit.define("Approve photo") { }
+    }.should raise_error SharedWorkforce::ConfigurationError
   end
   
   it "should raise a ConfigurationError if an API key is not set" do
-    Hci::Client.api_key = nil
+    SharedWorkforce::Client.api_key = nil
     lambda {
-      Hci::Hit.define("Approve photo") { }
-    }.should raise_error Hci::ConfigurationError
+      SharedWorkforce::Hit.define("Approve photo") { }
+    }.should raise_error SharedWorkforce::ConfigurationError
   end
 end
 

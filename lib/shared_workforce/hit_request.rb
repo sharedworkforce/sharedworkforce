@@ -1,6 +1,6 @@
 require 'rest_client'
 require 'json'
-module Hci
+module SharedWorkforce
   class HitRequest
   
     def initialize(hit, params)

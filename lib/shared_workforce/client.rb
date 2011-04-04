@@ -1,4 +1,4 @@
-module Hci
+module SharedWorkforce
   class Client
   
     @http_end_point = "http://hci.heroku.com"
@@ -12,7 +12,7 @@ module Hci
       attr_accessor :callback_path
       
       def version
-        Hci::VERSION
+        SharedWorkforce::VERSION
       end
     
       def load!

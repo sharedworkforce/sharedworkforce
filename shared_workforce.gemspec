@@ -1,18 +1,18 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "hci/version"
+require "shared_workforce/version"
 
 Gem::Specification.new do |s|
-  s.name        = "hci"
-  s.version     = Hci::VERSION
+  s.name        = "shared_workforce"
+  s.version     = SharedWorkforce::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Sam Oliver"]
   s.email       = ["sam@samoliver.com"]
   s.homepage    = ""
-  s.summary     = %q{HCI client}
-  s.description = %q{HCI is a service and simple API for human intelligence tasks}
+  s.summary     = %q{Shared Workforce Client}
+  s.description = %q{Shared Workforce is a service and simple API for human intelligence tasks}
 
-  s.rubyforge_project = "hci"
+  s.rubyforge_project = "shared_workforce_client"
   
   s.add_dependency "rest-client"
   s.add_dependency "json"

@@ -1,4 +1,4 @@
-module Hci
+module SharedWorkforce
   class Hit
     
     class << self
@@ -10,8 +10,8 @@ module Hci
       end
 
       def define(name, &block)
-        raise ConfigurationError, "Please set your Hci api key with Hci::Client.api_key = 'your-api-key-here'" unless Client.api_key
-        raise ConfigurationError, "Please set your callback URL with Hci::Client.callback_host = 'www.your-domain-name.com'" unless Client.callback_host
+        raise ConfigurationError, "Please set your SharedWorkforce api key with SharedWorkforce::Client.api_key = 'your-api-key-here'" unless Client.api_key
+        raise ConfigurationError, "Please set your callback URL with SharedWorkforce::Client.callback_host = 'www.your-domain-name.com'" unless Client.callback_host
         
         hit = self.new
         hit.name = name

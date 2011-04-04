@@ -1,4 +1,4 @@
-module Hci
+module SharedWorkforce
   class EndPoint
 
     def initialize(app)
@@ -21,7 +21,7 @@ module Hci
       body = JSON.parse(req.body.read)
       puts "processing hit callback"
       puts body.inspect
-      Hci::HitResult.new(body).process!
+      SharedWorkforce::HitResult.new(body).process!
     
       [ 200,
         { "Content-Type"   => "text/html",

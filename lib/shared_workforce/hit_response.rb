@@ -1,4 +1,4 @@
-module Hci
+module SharedWorkforce
   class HitResponse
     
     def self.create_collection_from_array(ary)

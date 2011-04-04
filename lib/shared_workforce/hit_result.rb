@@ -1,4 +1,4 @@
-module Hci
+module SharedWorkforce
   class HitResult
    
     attr_accessor :callback_params

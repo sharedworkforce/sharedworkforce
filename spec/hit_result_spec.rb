@@ -9,7 +9,7 @@ describe "HitResult" do
     resources['2'] = OpenStruct.new(:approved=>false)
     resources['3'] = OpenStruct.new(:approved=>false)
       
-    hit = Hci::Hit.define("Approve photo") do |h|
+    hit = SharedWorkforce::Hit.define("Approve photo") do |h|
       
       h.on_completion do |result|
         if result.responses.first.answer == 'yes'
@@ -19,7 +19,7 @@ describe "HitResult" do
       
     end
     
-    Hci::HitResult.new({'callback_params'=>{'resource_id' => '2'}, 'responses'=>[{'answer'=>'yes'}], 'name'=>"Approve photo"}).process!
+    SharedWorkforce::HitResult.new({'callback_params'=>{'resource_id' => '2'}, 'responses'=>[{'answer'=>'yes'}], 'name'=>"Approve photo"}).process!
     
     resources['1'].approved.should == false
     resources['2'].approved.should == true
@@ -28,12 +28,12 @@ describe "HitResult" do
   end
   
   it "should collect the answers" do  
-    r = Hci::HitResult.new({'callback_params'=>{'resource_id' => '2'}, 'responses'=>[{'answer'=>'yes'}, {'answer'=>'no'}, {'answer'=>'yes'}], 'name'=>"Approve photo"})
+    r = SharedWorkforce::HitResult.new({'callback_params'=>{'resource_id' => '2'}, 'responses'=>[{'answer'=>'yes'}, {'answer'=>'no'}, {'answer'=>'yes'}], 'name'=>"Approve photo"})
     r.answers.should == ['yes', 'no', 'yes']
   end
   
   it "should collect the usernames" do  
-    r = Hci::HitResult.new({'callback_params'=>{'resource_id' => '2'}, 'responses'=>[{'answer'=>'yes', 'username'=>'bilbo'}, {'answer'=>'no', 'username'=>'frodo'}, {'answer'=>'yes', 'username'=>'sam'}], 'name'=>"Approve photo"})
+    r = SharedWorkforce::HitResult.new({'callback_params'=>{'resource_id' => '2'}, 'responses'=>[{'answer'=>'yes', 'username'=>'bilbo'}, {'answer'=>'no', 'username'=>'frodo'}, {'answer'=>'yes', 'username'=>'sam'}], 'name'=>"Approve photo"})
     r.usernames.should == ['bilbo', 'frodo', 'sam']
   end
   
