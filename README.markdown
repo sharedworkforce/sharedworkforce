@@ -14,9 +14,6 @@ The service is currently in private beta. You can apply for an invitation at [sh
 Getting started
 ===============
 
-Installation
-------------
-
 ### Step 1 - get an API key
 
 Register for a beta invitation at [sharedworkforce.com](http://www.sharedworkforce.com). Once you are invited, you can create your account and retrieve your API key - which will look something like this:
