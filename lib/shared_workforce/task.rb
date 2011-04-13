@@ -1,38 +1,38 @@
 module SharedWorkforce
-  class Hit
+  class Task
     
     class << self
     
-      attr_accessor :hits
+      attr_accessor :tasks
     
-      def hits
-        @hits ||= {}
+      def tasks
+        @tasks ||= {}
       end
 
       def define(name, &block)
         raise ConfigurationError, "Please set your SharedWorkforce api key with SharedWorkforce::Client.api_key = 'your-api-key-here'" unless Client.api_key
         raise ConfigurationError, "Please set your callback URL with SharedWorkforce::Client.callback_host = 'www.your-domain-name.com'" unless Client.callback_host
         
-        hit = self.new
-        hit.name = name
-        yield hit
-        self.hits[name] = hit
+        task = self.new
+        task.name = name
+        yield task
+        self.tasks[name] = task
       end
     
       def request(name, options)
-        @hits[name].request(options)
+        @tasks[name].request(options)
       end
       
       def cancel(name, options)
-        @hits[name].cancel(options)
+        @tasks[name].cancel(options)
       end
     
       def find(name)
-        self.hits[name]
+        self.tasks[name]
       end
     
       def clear!
-        @hits = {}
+        @tasks = {}
       end
   
     end
@@ -43,20 +43,20 @@ module SharedWorkforce
     attr_accessor :answer_options
     attr_accessor :answer_type
     attr_accessor :responses_required
-    attr_accessor :replace # whether hits with the same resource id and name should be overwritten
+    attr_accessor :replace # whether tasks with the same resource id and name should be overwritten
 
     def replace
       @replace ||= false
     end
   
     def request(options)
-      hit_request = HitRequest.new(self, options)
-      hit_request.create
+      task_request = TaskRequest.new(self, options)
+      task_request.create
     end
     
     def cancel(options)
-      hit_request = HitRequest.new(self, options)
-      hit_request.cancel
+      task_request = TaskRequest.new(self, options)
+      task_request.cancel
     end
   
     def to_hash

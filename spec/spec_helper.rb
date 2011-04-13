@@ -8,7 +8,7 @@ require 'webmock/rspec'
 RSpec.configure do |config|
   config.color_enabled = true
   config.after :each do
-    SharedWorkforce::Hit.clear!
+    SharedWorkforce::Task.clear!
   end
   
   config.before :each do

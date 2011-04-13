@@ -1,10 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe "HitRequest" do
+describe "TaskRequest" do
   
-  it "should invoke a hit request" do
+  it "should invoke a task request" do
     
-    hit = SharedWorkforce::Hit.define "Approve photo" do |h|
+    task = SharedWorkforce::Task.define "Approve photo" do |h|
 
       h.directions = "Please classify this photo by choosing the appropriate tickboxes."
       h.image_url = "http://www.google.com/logo.png"
@@ -23,11 +23,11 @@ describe "HitRequest" do
 
     end
     
-    hit_request = SharedWorkforce::HitRequest.new(hit, :callback_params=>{:resource_id=>'1234'})
+    task_request = SharedWorkforce::TaskRequest.new(task, :callback_params=>{:resource_id=>'1234'})
     
-    stub_request(:post, "hci.heroku.com/hits")
-    hit_request.create
-    a_request(:post, "http://hci.heroku.com/hits").with(:body=>{'hit'=>
+    stub_request(:post, "hci.heroku.com/tasks")
+    task_request.create
+    a_request(:post, "http://hci.heroku.com/tasks").with(:body=>{'task'=>
       {
         'name'=>"Approve photo",
         'directions'=>"Please classify this photo by choosing the appropriate tickboxes.",
@@ -35,7 +35,7 @@ describe "HitRequest" do
         'answer_options'=> ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways', 'Contains more than one person in the foreground', 'Has people in the background', 'Contains children'],
         'responses_required'=>3,
         'answer_type'=>'tags',
-        'callback_url'=>"#{SharedWorkforce::Client.callback_host}/hci_hit_result",
+        'callback_url'=>"#{SharedWorkforce::Client.callback_host}/hci_task_result",
         'callback_params'=>{'resource_id'=>'1234'},
         'replace'=>false
       }, :api_key=>'test-api-key'}).should have_been_made.once
@@ -43,9 +43,9 @@ describe "HitRequest" do
   end
   
   
-  it "should invoke a hit cancellation" do
+  it "should invoke a task cancellation" do
     
-    hit = SharedWorkforce::Hit.define "Approve photo" do |h|
+    task = SharedWorkforce::Task.define "Approve photo" do |h|
 
       h.directions = "Please classify this photo by choosing the appropriate tickboxes."
       h.image_url = "http://www.google.com/logo.png"
@@ -64,11 +64,11 @@ describe "HitRequest" do
 
     end
     
-    hit_request = SharedWorkforce::HitRequest.new(hit, :callback_params=>{:resource_id=>'1234'})
+    task_request = SharedWorkforce::TaskRequest.new(task, :callback_params=>{:resource_id=>'1234'})
     
-    stub_request(:post, "hci.heroku.com/hits/cancel")
-    hit_request.cancel
-    a_request(:post, "http://hci.heroku.com/hits/cancel").with(:body=>{'hit'=>
+    stub_request(:post, "hci.heroku.com/tasks/cancel")
+    task_request.cancel
+    a_request(:post, "http://hci.heroku.com/tasks/cancel").with(:body=>{'task'=>
       {
         'name'=>"Approve photo",
         'directions'=>"Please classify this photo by choosing the appropriate tickboxes.",
@@ -76,7 +76,7 @@ describe "HitRequest" do
         'answer_options'=> ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways', 'Contains more than one person in the foreground', 'Has people in the background', 'Contains children'],
         'responses_required'=>3,
         'answer_type'=>'tags',
-        'callback_url'=>"#{SharedWorkforce::Client.callback_host}/hci_hit_result",
+        'callback_url'=>"#{SharedWorkforce::Client.callback_host}/hci_task_result",
         'callback_params'=>{'resource_id'=>'1234'},
         'replace'=>false
       }, :api_key=>'test-api-key'}).should have_been_made.once
@@ -85,7 +85,7 @@ describe "HitRequest" do
   
   it "should allow options to be overridden when making the request" do
     
-    hit = SharedWorkforce::Hit.define "Approve photo" do |h|
+    task = SharedWorkforce::Task.define "Approve photo" do |h|
 
       h.directions = "Please classify this photo by choosing the appropriate tickboxes."
       h.image_url = "http://www.google.com/logo.png"
@@ -103,11 +103,11 @@ describe "HitRequest" do
 
     end
     
-    hit_request = SharedWorkforce::HitRequest.new(hit, {:callback_params=>{:resource_id=>'1234'}, :image_url=>"http://www.example.com/image.jpg"})
+    task_request = SharedWorkforce::TaskRequest.new(task, {:callback_params=>{:resource_id=>'1234'}, :image_url=>"http://www.example.com/image.jpg"})
     
-    stub_request(:post, "hci.heroku.com/hits")
-    hit_request.create
-    a_request(:post, "http://hci.heroku.com/hits").with(:body=>{'hit'=>
+    stub_request(:post, "hci.heroku.com/tasks")
+    task_request.create
+    a_request(:post, "http://hci.heroku.com/tasks").with(:body=>{'task'=>
       {
         'name'=>"Approve photo",
         'directions'=>"Please classify this photo by choosing the appropriate tickboxes.",
@@ -115,7 +115,7 @@ describe "HitRequest" do
         'answer_options'=> ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways', 'Contains more than one person in the foreground', 'Has people in the background', 'Contains children'],
         'responses_required'=>3,
         'answer_type'=>'tags',
-        'callback_url'=>"#{SharedWorkforce::Client.callback_host}/hci_hit_result",
+        'callback_url'=>"#{SharedWorkforce::Client.callback_host}/hci_task_result",
         'callback_params'=>{'resource_id'=>'1234'},
         'replace'=>false,
       }, :api_key=>'test-api-key'}).should have_been_made.once

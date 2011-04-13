@@ -1,5 +1,5 @@
 module SharedWorkforce
-  class HitResult
+  class TaskResult
    
     attr_accessor :callback_params
     attr_accessor :responses
@@ -8,7 +8,7 @@ module SharedWorkforce
     
     def initialize(params)
       self.callback_params = params['callback_params']
-      self.responses = HitResponse.create_collection_from_array(params['responses'])
+      self.responses = TaskResponse.create_collection_from_array(params['responses'])
       self.name = params['name']
     end
     
@@ -21,10 +21,10 @@ module SharedWorkforce
     end
     
     def process!
-      if hit = Hit.find(name)
-        hit.complete!(self)
+      if task = Task.find(name)
+        task.complete!(self)
       else
-        raise "The hit #{name} could not be found"
+        raise "The task #{name} could not be found"
       end
     end
    

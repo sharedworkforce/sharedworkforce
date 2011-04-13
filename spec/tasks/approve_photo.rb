@@ -1,4 +1,4 @@
-SharedWorkforce::Hit.define "Approve photo" do |h|
+SharedWorkforce::Task.define "Approve photo" do |h|
   
   h.directions = "Please classify this photo by choosing the appropriate tickboxes."
   h.image_url = "http://www.google.com/logo.png"

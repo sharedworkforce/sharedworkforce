@@ -2,7 +2,7 @@ module SharedWorkforce
   class Client
   
     @http_end_point = "http://hci.heroku.com"
-    @load_path = "hits"
+    @load_path = "tasks"
   
     class << self
       attr_accessor :api_key
@@ -26,7 +26,7 @@ module SharedWorkforce
       end
       
       def callback_path
-        "hci_hit_result"
+        "hci_task_result"
       end
     end
   

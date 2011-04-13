@@ -19,9 +19,9 @@ module SharedWorkforce
     def process_request(env)
       req = Rack::Request.new(env)
       body = JSON.parse(req.body.read)
-      puts "processing hit callback"
+      puts "processing task callback"
       puts body.inspect
-      SharedWorkforce::HitResult.new(body).process!
+      SharedWorkforce::TaskResult.new(body).process!
     
       [ 200,
         { "Content-Type"   => "text/html",
