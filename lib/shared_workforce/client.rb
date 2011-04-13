@@ -1,7 +1,7 @@
 module SharedWorkforce
   class Client
   
-    @http_end_point = "http://hci.heroku.com"
+    @http_end_point = "http://api.sharedworkforce.com"
     @load_path = "tasks"
   
     class << self
