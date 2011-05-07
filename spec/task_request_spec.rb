@@ -1,7 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "TaskRequest" do
-  
   describe "#create" do
     it "should invoke a task request" do
   
@@ -122,8 +121,5 @@ describe "TaskRequest" do
         }, :api_key=>'test-api-key'}).should have_been_made.once
     
     end
-  end
-  
+  end 
 end
-
-
