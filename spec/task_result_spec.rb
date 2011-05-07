@@ -1,7 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "TaskResult" do
-  
   describe "#process!" do
     it "should invoke a tasks complete callback" do
       
@@ -42,5 +41,4 @@ describe "TaskResult" do
       r.usernames.should == ['bilbo', 'frodo', 'sam']
     end
   end
-  
 end
