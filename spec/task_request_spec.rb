@@ -25,9 +25,9 @@ describe "TaskRequest" do
     
     task_request = SharedWorkforce::TaskRequest.new(task, :callback_params=>{:resource_id=>'1234'})
     
-    stub_request(:post, "hci.heroku.com/tasks")
+    stub_request(:post, "api.sharedworkforce.com/tasks")
     task_request.create
-    a_request(:post, "http://hci.heroku.com/tasks").with(:body=>{'task'=>
+    a_request(:post, "http://api.sharedworkforce.com/tasks").with(:body=>{'task'=>
       {
         'name'=>"Approve photo",
         'directions'=>"Please classify this photo by choosing the appropriate tickboxes.",
@@ -66,9 +66,9 @@ describe "TaskRequest" do
     
     task_request = SharedWorkforce::TaskRequest.new(task, :callback_params=>{:resource_id=>'1234'})
     
-    stub_request(:post, "hci.heroku.com/tasks/cancel")
+    stub_request(:post, "api.sharedworkforce.com/tasks/cancel")
     task_request.cancel
-    a_request(:post, "http://hci.heroku.com/tasks/cancel").with(:body=>{'task'=>
+    a_request(:post, "http://api.sharedworkforce.com/tasks/cancel").with(:body=>{'task'=>
       {
         'name'=>"Approve photo",
         'directions'=>"Please classify this photo by choosing the appropriate tickboxes.",
@@ -105,9 +105,9 @@ describe "TaskRequest" do
     
     task_request = SharedWorkforce::TaskRequest.new(task, {:callback_params=>{:resource_id=>'1234'}, :image_url=>"http://www.example.com/image.jpg"})
     
-    stub_request(:post, "hci.heroku.com/tasks")
+    stub_request(:post, "api.sharedworkforce.com/tasks")
     task_request.create
-    a_request(:post, "http://hci.heroku.com/tasks").with(:body=>{'task'=>
+    a_request(:post, "http://api.sharedworkforce.com/tasks").with(:body=>{'task'=>
       {
         'name'=>"Approve photo",
         'directions'=>"Please classify this photo by choosing the appropriate tickboxes.",
