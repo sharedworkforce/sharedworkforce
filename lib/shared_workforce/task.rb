@@ -10,8 +10,8 @@ module SharedWorkforce
       end
 
       def define(name, &block)
-        raise ConfigurationError, "Please set your SharedWorkforce api key with SharedWorkforce::Client.api_key = 'your-api-key-here'" unless Client.api_key
-        raise ConfigurationError, "Please set your callback URL with SharedWorkforce::Client.callback_host = 'www.your-domain-name.com'" unless Client.callback_host
+        raise ConfigurationError, "Please set your SharedWorkforce api key with SharedWorkforce::Client.api_key = 'your-api-key-here'" unless SharedWorkforce.configuration.api_key
+        raise ConfigurationError, "Please set your callback URL with SharedWorkforce::Client.callback_host = 'www.your-domain-name.com'" unless SharedWorkforce.configuration.callback_host
         
         task = self.new
         task.name = name
@@ -67,7 +67,7 @@ module SharedWorkforce
         :answer_options => answer_options,
         :responses_required => responses_required,
         :answer_type => answer_type.to_s,
-        :callback_url => Client.callback_url,
+        :callback_url => callback_url,
         :replace => replace
       }
     end
@@ -89,7 +89,11 @@ module SharedWorkforce
     def fail!(results)
       @on_failure_proc.call(results) if @on_failure_proc
     end
-  
-  
+    
+    private
+    
+    def callback_url
+      SharedWorkforce.configuration.callback_url
+    end
   end
 end

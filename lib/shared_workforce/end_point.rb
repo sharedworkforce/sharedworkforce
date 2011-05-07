@@ -6,7 +6,7 @@ module SharedWorkforce
     end
 
     def call(env)
-      if env["PATH_INFO"] =~ /^\/#{Client.callback_path}/
+      if env["PATH_INFO"] =~ /^\/#{callback_path}/
         process_request(env)
       else
         @app.call(env)
@@ -28,6 +28,10 @@ module SharedWorkforce
           "Content-Length" => "0" },
         [""]  
       ]
+    end
+    
+    def callback_path
+      SharedWorkforce.configuration.callback_path
     end
 
   end
