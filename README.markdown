@@ -32,8 +32,10 @@ Or, for Rails 2.x add the gem to your environment.rb
 
 Create config/initializers/shared_workforce.rb
 
-    SharedWorkforce::Client.api_key = "your-api-key"
-    SharedWorkforce::Client.callback_host = "http://your-website-host"
+    SharedWorkforce.configure do |config|
+      config.api_key = "your-api-key"
+      config.callback_host = "http://your-website-host"
+    end
 
 If you're not using Rails, simply require the gem or include it in your Gemfile, set the client configuration settings as above.
 
@@ -131,6 +133,14 @@ You can cancel tasks when they are no longer relevant.
       def cancel_tagging_request
         SharedWorkforce::Task.cancel "Classify photo", :callback_params=>{:photo_id=>self.id})
       end
+    end
+
+###Testing and development
+
+You can black-hole requests to SharedWorkforce for testing and development by adding the following configuration option in your initializer:
+
+    SharedWorkforce.configure do |config|
+      config.request_class = BlackHoleTaskRequest
     end
 
 License
