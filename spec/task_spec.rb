@@ -91,19 +91,21 @@ describe "Task" do
   end
   
   it "should raise a ConfigurationError if a callback host is not set" do
+    SharedWorkforce::Task.define("Approve photo") {}
     with_configuration do |config|
       config.callback_host = nil
       lambda {
-        SharedWorkforce::Task.define("Approve photo") { }
+        SharedWorkforce::Task.request("Approve photo", {})
       }.should raise_error SharedWorkforce::ConfigurationError
     end
   end
   
   it "should raise a ConfigurationError if an API key is not set" do
+    SharedWorkforce::Task.define("Approve photo") {}
     with_configuration do |config|
       config.api_key = nil
       lambda {
-        SharedWorkforce::Task.define("Approve photo") { }
+        SharedWorkforce::Task.request("Approve photo", {})
       }.should raise_error SharedWorkforce::ConfigurationError
     end
   end

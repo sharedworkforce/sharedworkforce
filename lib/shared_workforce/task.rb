@@ -10,9 +10,6 @@ module SharedWorkforce
       end
 
       def define(name, &block)
-        raise ConfigurationError, "Please set your SharedWorkforce api key with SharedWorkforce::Client.api_key = 'your-api-key-here'" unless SharedWorkforce.configuration.api_key
-        raise ConfigurationError, "Please set your callback URL with SharedWorkforce::Client.callback_host = 'www.your-domain-name.com'" unless SharedWorkforce.configuration.callback_host
-        
         task = self.new
         task.name = name
         yield task
@@ -96,8 +93,8 @@ module SharedWorkforce
       SharedWorkforce.configuration.callback_url
     end
     
-    def remote_request
-      SharedWorkforce.configuration.request_class.new
+    def remote_request(*args)
+      SharedWorkforce.configuration.request_class.new(*args)
     end
   end
 end
