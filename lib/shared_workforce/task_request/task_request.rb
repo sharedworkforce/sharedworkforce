@@ -1,4 +1,3 @@
-require 'rest_client'
 require 'json'
 module SharedWorkforce
   class TaskRequest
@@ -6,14 +5,6 @@ module SharedWorkforce
     def initialize(task, params)
       @task = task
       @params = params
-    end
-  
-    def create
-      RestClient.post("#{http_end_point}/tasks", *request_params)
-    end
-    
-    def cancel
-      RestClient.post("#{http_end_point}/tasks/cancel", *request_params)
     end
     
     private

@@ -5,11 +5,13 @@ module SharedWorkforce
     attr_accessor :load_path
     attr_accessor :http_end_point
     attr_accessor :callback_host
+    attr_accessor :request_class
     attr_writer :callback_path
     
     def initialize
       @http_end_point = "http://api.sharedworkforce.com"
       @load_path = "tasks"
+      @request_class = HttpTaskRequest
     end
     
     def callback_url

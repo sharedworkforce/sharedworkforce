@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
-describe "TaskRequest" do
+describe "HttpTaskRequest" do
   describe "#create" do
     it "should invoke a task request" do
   
@@ -23,7 +23,7 @@ describe "TaskRequest" do
 
       end
     
-      task_request = SharedWorkforce::TaskRequest.new(task, :callback_params=>{:resource_id=>'1234'})
+      task_request = SharedWorkforce::HttpTaskRequest.new(task, :callback_params=>{:resource_id=>'1234'})
     
       stub_request(:post, "api.sharedworkforce.com/tasks")
       task_request.create
@@ -62,7 +62,7 @@ describe "TaskRequest" do
 
        end
 
-       task_request = SharedWorkforce::TaskRequest.new(task, {:callback_params=>{:resource_id=>'1234'}, :image_url=>"http://www.example.com/image.jpg"})
+       task_request = SharedWorkforce::HttpTaskRequest.new(task, {:callback_params=>{:resource_id=>'1234'}, :image_url=>"http://www.example.com/image.jpg"})
 
        stub_request(:post, "api.sharedworkforce.com/tasks")
        task_request.create
@@ -103,7 +103,7 @@ describe "TaskRequest" do
 
       end
     
-      task_request = SharedWorkforce::TaskRequest.new(task, :callback_params=>{:resource_id=>'1234'})
+      task_request = SharedWorkforce::HttpTaskRequest.new(task, :callback_params=>{:resource_id=>'1234'})
     
       stub_request(:post, "api.sharedworkforce.com/tasks/cancel")
       task_request.cancel

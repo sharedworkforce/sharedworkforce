@@ -50,12 +50,12 @@ module SharedWorkforce
     end
   
     def request(options)
-      task_request = TaskRequest.new(self, options)
+      task_request = remote_request(self, options)
       task_request.create
     end
     
     def cancel(options)
-      task_request = TaskRequest.new(self, options)
+      task_request = remote_request(self, options)
       task_request.cancel
     end
   
@@ -94,6 +94,10 @@ module SharedWorkforce
     
     def callback_url
       SharedWorkforce.configuration.callback_url
+    end
+    
+    def remote_request
+      SharedWorkforce.configuration.request_class.new
     end
   end
 end
