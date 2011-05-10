@@ -11,7 +11,7 @@ module SharedWorkforce
     def initialize
       @http_end_point = "http://api.sharedworkforce.com"
       @load_path = "tasks"
-      @request_class = HttpTaskRequest
+      @request_class = TaskRequest::Http
     end
     
     def callback_url

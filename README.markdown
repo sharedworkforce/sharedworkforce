@@ -140,7 +140,7 @@ You can cancel tasks when they are no longer relevant.
 You can black-hole requests to SharedWorkforce for testing and development by adding the following configuration option in your initializer:
 
     SharedWorkforce.configure do |config|
-      config.request_class = BlackHoleTaskRequest
+      config.request_class = TaskRequest::BlackHole
     end
 
 License

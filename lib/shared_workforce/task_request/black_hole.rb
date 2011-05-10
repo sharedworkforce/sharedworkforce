@@ -1,6 +1,6 @@
 require 'rest_client'
 module SharedWorkforce
-  class BlackHoleTaskRequest < TaskRequest
+  class TaskRequest::BlackHole < TaskRequest  
     def create; end
     def cancel; end
   end

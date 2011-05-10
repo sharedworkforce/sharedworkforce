@@ -1,7 +1,7 @@
 require 'json'
 module SharedWorkforce
   class TaskRequest
-  
+    
     def initialize(task, params)
       @task = task
       @params = params
