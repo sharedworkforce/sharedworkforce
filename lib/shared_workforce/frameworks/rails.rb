@@ -1,6 +1,7 @@
 if defined?(ActionController::Metal)
   class Railtie < Rails::Railtie
-    initializer :load_hci do |app|
+    initializer 'shared_workforce' do |app|      
+      app.config.middleware.use SharedWorkforce::EndPoint
       SharedWorkforce::Client.load_path = Rails.root + SharedWorkforce.configuration.load_path
       SharedWorkforce::Client.load!
     end
