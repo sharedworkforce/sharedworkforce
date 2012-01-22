@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Sam Oliver"]
   s.email       = ["sam@samoliver.com"]
-  s.homepage    = "http://github.com/pigment/shared_workforce"
+  s.homepage    = "http://github.com/samoli/shared-workforce"
   s.summary     = %q{Shared Workforce Client}
   s.description = %q{Shared Workforce is a service and simple API for human intelligence tasks}
 
