@@ -8,12 +8,10 @@ require 'webmock/rspec'
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[File.join(File.expand_path('../support', __FILE__), '**/*.rb')].each {|f| require f}
+Dir[File.join(File.expand_path('../tasks', __FILE__), '**/*.rb')].each {|f| require f}
 
 RSpec.configure do |config|
   config.color_enabled = true
-  config.after :each do
-    SharedWorkforce::Task.clear!
-  end
   
   config.before :each do
     SharedWorkforce.configure do |config|

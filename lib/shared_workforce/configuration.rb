@@ -2,7 +2,6 @@ module SharedWorkforce
   class Configuration
     
     attr_accessor :api_key
-    attr_accessor :load_path
     attr_accessor :http_end_point
     attr_accessor :callback_host
     attr_accessor :request_class
@@ -10,7 +9,6 @@ module SharedWorkforce
     
     def initialize
       @http_end_point = "http://api.sharedworkforce.com"
-      @load_path = "tasks"
       @request_class = TaskRequest::Http
     end
     
