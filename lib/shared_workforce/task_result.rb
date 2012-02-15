@@ -22,6 +22,7 @@ module SharedWorkforce
     
     def process!
       if task = Task.find(name)
+        task.success!(self)
         task.complete!(self)
       else
         raise "The task #{name} could not be found"
