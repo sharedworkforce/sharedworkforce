@@ -2,13 +2,8 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
 describe "TaskResult" do
   describe "#process!" do
-    it "should invoke a tasks complete callback" do
-      ApprovePhotoTask.should_receive(:complete!).once
-      SharedWorkforce::TaskResult.new({'callback_params'=>{'resource_id' => '2'}, 'responses'=>[{'answer'=>'yes'}], 'name'=>"Approve photo"}).process!
-    end
-
-    it "should invoke a tasks success callback" do
-      ApprovePhotoTask.should_receive(:complete!).once
+    it "should invoke Task#process_result" do
+      ApprovePhotoTask.any_instance.should_receive(:process_result).once
       SharedWorkforce::TaskResult.new({'callback_params'=>{'resource_id' => '2'}, 'responses'=>[{'answer'=>'yes'}], 'name'=>"Approve photo"}).process!
     end
   end

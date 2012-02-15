@@ -4,8 +4,8 @@ describe "TaskRequest::Http" do
   describe "#create" do
     it "should invoke a task request" do
       
-      task = ApprovePhotoTask.new(:image_url=>"http://www.google.com/logo.png")
-      task_request = SharedWorkforce::TaskRequest::Http.new(task, :callback_params=>{:resource_id=>'1234'})
+      task = ApprovePhotoTask.new
+      task_request = SharedWorkforce::TaskRequest::Http.new(task, :image_url=>"http://www.google.com/logo.png", :callback_params=>{:resource_id=>'1234'})
     
       stub_request(:post, "api.sharedworkforce.com/tasks")
       task_request.create

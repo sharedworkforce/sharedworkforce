@@ -8,7 +8,7 @@ module SharedWorkforce
     
     def initialize(params)
       self.callback_params = params['callback_params']
-      self.responses = TaskResponse.create_collection_from_array(params['responses'])
+      self.responses = TaskResponse.create_collection_from_array(params['responses']) if params['responses']
       self.name = params['name']
     end
     
@@ -21,13 +21,16 @@ module SharedWorkforce
     end
     
     def process!
-      if task = Task.find(name)
-        task.success!(self)
-        task.complete!(self)
+      if task = find_task(name)
+        task.new(self)
       else
         raise "The task #{name} could not be found"
       end
     end
    
+  private
+    def find_task(name)
+      "#{name.gsub(' ', '_').classify}Task".constantize
+    end
   end
 end

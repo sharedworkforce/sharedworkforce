@@ -24,6 +24,10 @@ module SharedWorkforce
     def api_key
       SharedWorkforce.configuration.api_key
     end
+
+    def task
+      @task
+    end
     
   end
 end

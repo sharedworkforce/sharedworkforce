@@ -32,7 +32,6 @@ describe "Task" do
     task.responses_required.should == 3
     task.image_url.should == "http://www.google.com/logo.png"
     task.answer_options.should == ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways']
-
   end
 
   it "should allow certain default attributes to be overwritten" do
@@ -47,6 +46,8 @@ describe "Task" do
       replace false
 
       answer_options ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways']
+
+      text "A photo"
 
       on_complete :puts_complete
       on_failure :puts_failure
@@ -73,6 +74,7 @@ describe "Task" do
     task.responses_required.should == 10
     task.instruction.should == nil
     task.replace.should == true
+    task.text.should == "A photo"
 
   end
   
@@ -92,7 +94,7 @@ describe "Task" do
     end
     
     PhotoApprover.should_receive(:approve).once
-    task.complete!({})
+    task.new.process_result({})
   end
 
   it "should run a success callback" do
@@ -111,7 +113,7 @@ describe "Task" do
     end
     
     PhotoApprover.should_receive(:approve).once
-    task.success!({})
+    task.new.process_result({})
   end
   
   it "should run a failure callback" do
@@ -130,13 +132,19 @@ describe "Task" do
     end
     
     PhotoApprover.should_receive(:resubmit).once
-    task.fail!({})
+    task.new.fail!({})
+  end
+
+  it "should run setup after initializing" do
+    task_class = Class.new { include SharedWorkforce::Task; def setup; end }
+    task_class.any_instance.should_receive(:setup).once
+    task_class.new
   end
   
   it "should not raise an error if there is no callback defined" do
     lambda {
       task = Class.new { include SharedWorkforce::Task }
-      task.fail!({})
+      task.new.fail!({})
     }.should_not raise_error
   end
   
@@ -173,6 +181,32 @@ describe "Task" do
       lambda {
         task.new.cancel(:request_id=>'123')
       }.should raise_error SharedWorkforce::ConfigurationError
+    end
+  end
+
+  describe "#resource" do
+    it "should return the resource passed to as an argument to new" do
+      task_class = Class.new { include SharedWorkforce::Task }
+      resource = double
+      task = task_class.new(resource)
+      task.resource.should == resource
+    end
+
+    it "should return the resource from the callback params" do
+      class ResourceFinder; def self.find(id); return "#{id}ABCD"; end; end
+      task_class = Class.new { include SharedWorkforce::Task }
+      task = task_class.new(SharedWorkforce::TaskResult.new({'callback_params'=>{'resource_class_name'=>'ResourceFinder', 'resource_id' => '2'}}))
+      task.resource.should == "2ABCD"
+    end
+  end
+
+  describe "#to_hash" do
+    it "should include the class name and id of the resource in the callback params" do
+      task_class = Class.new { include SharedWorkforce::Task }
+      resource = double("user", :id=>333)
+      task = task_class.new(resource)
+      task.to_hash[:callback_params][:resource_id].should == 333
+      task.to_hash[:callback_params][:resource_class_name].should == "RSpec::Mocks::Mock"
     end
   end
 end
