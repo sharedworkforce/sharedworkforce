@@ -2,6 +2,11 @@ require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 require 'ostruct'
 
 describe "Task" do
+
+  before(:each) do
+    @resource_class = Class.new { def self.name; "Resource"; end; def self.find; end; def id; 333; end }
+  end
+
   it "should define a task with default attributes" do
     task_class = Class.new do
       include SharedWorkforce::Task
@@ -193,9 +198,17 @@ describe "Task" do
   describe "#resource" do
     it "should return the resource that passed to as an argument to new" do
       task_class = Class.new { include SharedWorkforce::Task }
-      resource = double
+      resource = @resource_class.new
       task = task_class.new(resource)
       task.resource.should == resource
+    end
+
+    it "should raise an ArgumentError if the resource does not respond to #find" do
+      task_class = Class.new { include SharedWorkforce::Task }
+      resource = double
+      lambda {
+        task = task_class.new(resource)
+      }.should raise_error ArgumentError
     end
 
     it "should return the resource from the callback params" do
@@ -215,10 +228,9 @@ describe "Task" do
   describe "#to_hash" do
     it "should include the class name and id of the resource in the callback params" do
       task_class = Class.new { include SharedWorkforce::Task }
-      resource = double("user", :id=>333)
-      task = task_class.new(resource)
+      task = task_class.new(@resource_class.new)
       task.to_hash[:callback_params][:resource_id].should == 333
-      task.to_hash[:callback_params][:resource_class_name].should == "RSpec::Mocks::Mock"
+      task.to_hash[:callback_params][:resource_class_name].should == "Resource"
     end
   end
 end

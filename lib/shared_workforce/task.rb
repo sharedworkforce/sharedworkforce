@@ -66,7 +66,10 @@ module SharedWorkforce
       if resource_or_result.is_a?(TaskResult)
         @result = resource_or_result
         process_result(@result)
-      else
+      elsif resource_or_result
+        unless resource_or_result.respond_to?(:id) && resource_or_result.class.respond_to?(:find)
+          raise ArgumentError, "The resource you pass to new should respond to #id and it's class should respond to .find (or be an instance of ActiveRecord::Base) so it can be reloaded."
+        end 
         @resource = resource_or_result
       end
 
