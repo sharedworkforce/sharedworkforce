@@ -15,11 +15,11 @@ class ApprovePhotoTask
   on_complete :puts_complete
   on_failure :puts_failure
 
-  def puts_complete(results)
+  def puts_complete(resource, results)
     puts "Complete"
   end
 
-  def puts_failure(results)
+  def puts_failure(resource, results)
     puts "Failure"
   end
 end

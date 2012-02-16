@@ -81,62 +81,61 @@ describe "Task" do
   end
   
   describe "#process_result" do
-    it "should run a completion callback" do
-      class PhotoApprover; def approve; end; end
-          
-      task = Class.new do
-        include SharedWorkforce::Task
-        title "Approve photo"
-        
-        on_complete :log_approval
-        
-        def log_approval(result)
-          PhotoApprover.approve
-        end
-      end
-      
-      PhotoApprover.should_receive(:approve).once
-      task.new.process_result({})
-    end
-
-    it "should run a success callback" do
-
-      class PhotoApprover; def approve; end; end
-          
-      task = Class.new do
-        include SharedWorkforce::Task
-        title "Approve photo"
-        
-        on_success :log_approval
-        
-        def log_approval(result)
-          PhotoApprover.approve
-        end
-      end
-      
-      PhotoApprover.should_receive(:approve).once
-      task.new.process_result({})
+    it "should call success! and complete! with the results" do # Will become more important once we have task failure event handling
+      task_class = Class.new { include SharedWorkforce::Task; on_success :do_work; def do_work(*args); end; def setup(*args); end }
+      task = task_class.new
+      task.should_receive(:success!)
+      task.should_receive(:complete!)
+      task.process_result(SharedWorkforce::TaskResult.new({}))
     end
   end
   
-  describe "#fail!" do
-    it "should run a failure callback" do
+  describe "#success!" do
+    it "should run a success callback" do
+      task_class = Class.new { include SharedWorkforce::Task; on_success :do_work; def do_work(*args); end; def setup(*args); end }
+      resource = @resource_class.new
+      task = task_class.new(resource)
+      task.should_receive(:do_work)
+      task.success!(SharedWorkforce::TaskResult.new({}))
+    end
 
-      class PhotoApprover; def resubmit; end; end
-      
-      task = Class.new do
-        include SharedWorkforce::Task
-        title "Approve photo"
-        
-        on_failure :resubmit_photo
-        
-        def resubmit_photo(result)
-          PhotoApprover.resubmit
-        end
-      end
-      
-      PhotoApprover.should_receive(:resubmit).once
-      task.new.fail!({})
+    it "should pass the resource to the callback method as the first argument and the result as the second argument" do
+      task_class = Class.new { include SharedWorkforce::Task; on_success :do_work; def do_work(*args); end; def setup(*args); end }
+      resource = @resource_class.new
+      result = SharedWorkforce::TaskResult.new({})
+      task = task_class.new(resource)
+      task.should_receive(:do_work).with(resource, result)
+      task.success!(result)
+    end
+  end
+
+  describe "#complete!" do
+    it "should run a completion callback" do
+      task_class = Class.new { include SharedWorkforce::Task; on_complete :it_finished; def it_finished(*args); end; def setup(*args); end }
+      resource = @resource_class.new
+      task = task_class.new(resource)
+      task.should_receive(:it_finished)
+      task.complete!(SharedWorkforce::TaskResult.new({}))
+    end
+
+    it "should pass the resource to the callback method as the first argument and the result as the second argument" do
+      task_class = Class.new { include SharedWorkforce::Task; on_complete :it_finished; def it_finished(*args); end; def setup(*args); end }
+      resource = @resource_class.new
+      result = SharedWorkforce::TaskResult.new({})
+      task = task_class.new(resource)
+      task.should_receive(:it_finished).with(resource, result)
+      task.complete!(result)
+    end
+  end
+
+  describe "#fail!" do
+
+    it "should run a failure callback" do
+      task_class = Class.new { include SharedWorkforce::Task; on_failure :it_failed; def it_failed(*args); end; def setup(*args); end }
+      resource = @resource_class.new
+      task = task_class.new(resource)
+      task.should_receive(:it_failed)
+      task.fail!(SharedWorkforce::TaskResult.new({}))
     end
 
     it "should not raise an error if there is no callback defined" do
@@ -145,13 +144,31 @@ describe "Task" do
         task.new.fail!({})
       }.should_not raise_error
     end
+
+    it "should pass the resource to the callback method as the first argument and the result as the second argument" do
+      task_class = Class.new { include SharedWorkforce::Task; on_failure :it_failed; def it_failed(*args); end; def setup(*args); end }
+      resource = @resource_class.new
+      result = SharedWorkforce::TaskResult.new({})
+      task = task_class.new(resource)
+      task.should_receive(:it_failed).with(resource, result)
+      task.fail!(result)
+    end
   end
 
   describe ".new" do
-    it "setup should be called" do
-      task_class = Class.new { include SharedWorkforce::Task; def setup; end }
-      task_class.any_instance.should_receive(:setup).once
-      task_class.new
+    before do
+      @task_class = Class.new { include SharedWorkforce::Task; def setup; end }
+    end
+
+    it "should call setup after initialization" do
+      @task_class.any_instance.should_receive(:setup).once
+      @task_class.new
+    end
+
+    it "should pass the resource as an argument to setup" do
+      @resource = @resource_class.new
+      @task_class.any_instance.should_receive(:setup).with(@resource).once
+      @task_class.new(@resource)
     end
   end
 
