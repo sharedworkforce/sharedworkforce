@@ -3,7 +3,6 @@ require 'ostruct'
 
 describe "Task" do
   it "should define a task with default attributes" do
-    
     task_class = Class.new do
       include SharedWorkforce::Task
 
@@ -35,7 +34,6 @@ describe "Task" do
   end
 
   it "should allow certain default attributes to be overwritten" do
-    
     task_class = Class.new do
       include SharedWorkforce::Task
 
@@ -75,117 +73,125 @@ describe "Task" do
     task.instruction.should == nil
     task.replace.should == true
     task.text.should == "A photo"
-
   end
   
-  it "should run a completion callback" do
-
-    class PhotoApprover; def approve; end; end
+  describe "#process_result" do
+    it "should run a completion callback" do
+      class PhotoApprover; def approve; end; end
+          
+      task = Class.new do
+        include SharedWorkforce::Task
+        title "Approve photo"
         
-    task = Class.new do
-      include SharedWorkforce::Task
-      title "Approve photo"
-      
-      on_complete :log_approval
-      
-      def log_approval(result)
-        PhotoApprover.approve
-      end
-    end
-    
-    PhotoApprover.should_receive(:approve).once
-    task.new.process_result({})
-  end
-
-  it "should run a success callback" do
-
-    class PhotoApprover; def approve; end; end
+        on_complete :log_approval
         
-    task = Class.new do
-      include SharedWorkforce::Task
-      title "Approve photo"
-      
-      on_success :log_approval
-      
-      def log_approval(result)
-        PhotoApprover.approve
+        def log_approval(result)
+          PhotoApprover.approve
+        end
       end
+      
+      PhotoApprover.should_receive(:approve).once
+      task.new.process_result({})
     end
-    
-    PhotoApprover.should_receive(:approve).once
-    task.new.process_result({})
+
+    it "should run a success callback" do
+
+      class PhotoApprover; def approve; end; end
+          
+      task = Class.new do
+        include SharedWorkforce::Task
+        title "Approve photo"
+        
+        on_success :log_approval
+        
+        def log_approval(result)
+          PhotoApprover.approve
+        end
+      end
+      
+      PhotoApprover.should_receive(:approve).once
+      task.new.process_result({})
+    end
   end
   
-  it "should run a failure callback" do
+  describe "#fail!" do
+    it "should run a failure callback" do
 
-    class PhotoApprover; def resubmit; end; end
-    
-    task = Class.new do
-      include SharedWorkforce::Task
-      title "Approve photo"
+      class PhotoApprover; def resubmit; end; end
       
-      on_failure :resubmit_photo
-      
-      def resubmit_photo(result)
-        PhotoApprover.resubmit
+      task = Class.new do
+        include SharedWorkforce::Task
+        title "Approve photo"
+        
+        on_failure :resubmit_photo
+        
+        def resubmit_photo(result)
+          PhotoApprover.resubmit
+        end
       end
-    end
-    
-    PhotoApprover.should_receive(:resubmit).once
-    task.new.fail!({})
-  end
-
-  it "should run setup after initializing" do
-    task_class = Class.new { include SharedWorkforce::Task; def setup; end }
-    task_class.any_instance.should_receive(:setup).once
-    task_class.new
-  end
-  
-  it "should not raise an error if there is no callback defined" do
-    lambda {
-      task = Class.new { include SharedWorkforce::Task }
+      
+      PhotoApprover.should_receive(:resubmit).once
       task.new.fail!({})
-    }.should_not raise_error
-  end
-  
-  it "should request a task" do
-    task = Class.new { include SharedWorkforce::Task }
+    end
 
-    stub_request(:post, "http://api.sharedworkforce.com/tasks")
-    task.new.request(:request_id=>'123')
-    a_request(:post, "http://api.sharedworkforce.com/tasks").should have_been_made.once
-  end
-  
-  it "should cancel a task" do
-    task = Class.new { include SharedWorkforce::Task }
-
-    stub_request(:post, "http://api.sharedworkforce.com/tasks/cancel")
-    task.new.cancel(:request_id=>'123')
-    a_request(:post, "http://api.sharedworkforce.com/tasks/cancel").should have_been_made.once
-  end
-  
-  it "should raise a ConfigurationError if a callback host is not set" do
-    task = Class.new { include SharedWorkforce::Task }
-    with_configuration do |config|
-      config.callback_host = nil
+    it "should not raise an error if there is no callback defined" do
       lambda {
-        task.new.cancel(:request_id=>'123')
-      }.should raise_error SharedWorkforce::ConfigurationError
+        task = Class.new { include SharedWorkforce::Task }
+        task.new.fail!({})
+      }.should_not raise_error
+    end
+  end
+
+  describe ".new" do
+    it "setup should be called" do
+      task_class = Class.new { include SharedWorkforce::Task; def setup; end }
+      task_class.any_instance.should_receive(:setup).once
+      task_class.new
+    end
+  end
+
+  describe "#request" do
+    it "should make a new task http request" do
+      task = Class.new { include SharedWorkforce::Task }
+
+      stub_request(:post, "http://api.sharedworkforce.com/tasks")
+      task.new.request(:request_id=>'123')
+      a_request(:post, "http://api.sharedworkforce.com/tasks").should have_been_made.once
     end
   end
   
-  it "should raise a ConfigurationError if an API key is not set" do
-    task = Class.new { include SharedWorkforce::Task }
-    with_configuration do |config|
-      config.api_key = nil
-      lambda {
-        task.new.cancel(:request_id=>'123')
-      }.should raise_error SharedWorkforce::ConfigurationError
+  describe "#cancel" do
+    it "should send a cancel task http request" do
+      task = Class.new { include SharedWorkforce::Task }
+
+      stub_request(:post, "http://api.sharedworkforce.com/tasks/cancel")
+      task.new.cancel(:request_id=>'123')
+      a_request(:post, "http://api.sharedworkforce.com/tasks/cancel").should have_been_made.once
+    end
+
+    it "should raise a ConfigurationError if a callback host is not set" do
+      task = Class.new { include SharedWorkforce::Task }
+      with_configuration do |config|
+        config.callback_host = nil
+        lambda {
+          task.new.cancel(:request_id=>'123')
+        }.should raise_error SharedWorkforce::ConfigurationError
+      end
+    end
+    
+    it "should raise a ConfigurationError if an API key is not set" do
+      task = Class.new { include SharedWorkforce::Task }
+      with_configuration do |config|
+        config.api_key = nil
+        lambda {
+          task.new.cancel(:request_id=>'123')
+        }.should raise_error SharedWorkforce::ConfigurationError
+      end
     end
   end
 
   describe "#resource" do
-    it "should return the resource passed to as an argument to new" do
+    it "should return the resource that passed to as an argument to new" do
       task_class = Class.new { include SharedWorkforce::Task }
       resource = double
       task = task_class.new(resource)
