@@ -91,7 +91,7 @@ module SharedWorkforce
     end
 
     def resource
-      @resource ||= @result.callback_params['resource_class_name'].constantize.find(@result.callback_params['resource_id'])
+      @resource ||= find_resource
     end
 
     def request(options = {})
@@ -120,6 +120,12 @@ module SharedWorkforce
     end
    
   private
+
+    def find_resource
+      if @result.callback_params['resource_class_name'] && @result.callback_params['resource_id']
+        @result.callback_params['resource_class_name'].constantize.find(@result.callback_params['resource_id'])
+      end
+    end
     
     def callback_url
       SharedWorkforce.configuration.callback_url

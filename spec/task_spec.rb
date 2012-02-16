@@ -204,6 +204,12 @@ describe "Task" do
       task = task_class.new(SharedWorkforce::TaskResult.new({'callback_params'=>{'resource_class_name'=>'ResourceFinder', 'resource_id' => '2'}}))
       task.resource.should == "2ABCD"
     end
+
+    it "should return nil if the callback params do not specify a resource" do
+      task_class = Class.new { include SharedWorkforce::Task }
+      task = task_class.new(SharedWorkforce::TaskResult.new({'callback_params'=>{}}))
+      task.resource.should == nil
+    end
   end
 
   describe "#to_hash" do
