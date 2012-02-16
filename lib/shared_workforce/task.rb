@@ -55,13 +55,15 @@ module SharedWorkforce
 
     end # ends ClassMethods
 
+    attr_reader :callback_params
+
     def initialize_default_attributes
       self.class.default_attributes.each do |name, value|
         instance_variable_set("@#{name}", value)
       end
     end
 
-    def initialize(resource_or_result=nil)
+    def initialize(resource_or_result=nil, callback_params=nil)
       initialize_default_attributes
       if resource_or_result.is_a?(TaskResult)
         @result = resource_or_result
@@ -73,6 +75,7 @@ module SharedWorkforce
         @resource = resource_or_result
       end
 
+      @callback_params = callback_params
       setup(resource) if respond_to?(:setup)
     end
 

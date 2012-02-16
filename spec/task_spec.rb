@@ -157,7 +157,7 @@ describe "Task" do
 
   describe ".new" do
     before do
-      @task_class = Class.new { include SharedWorkforce::Task; def setup; end }
+      @task_class = Class.new { include SharedWorkforce::Task; def setup(*args); end }
     end
 
     it "should call setup after initialization" do
@@ -169,6 +169,13 @@ describe "Task" do
       @resource = @resource_class.new
       @task_class.any_instance.should_receive(:setup).with(@resource).once
       @task_class.new(@resource)
+    end
+
+    it "should set the callback params when passed as an argument" do
+      @resource = @resource_class.new
+      callback_params = {:profile_field=>'introduction'}
+      task = @task_class.new(@resource, callback_params)
+      task.callback_params.should == callback_params
     end
   end
 
