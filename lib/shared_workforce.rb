@@ -10,6 +10,8 @@ require 'shared_workforce/task_result'
 require 'shared_workforce/task_response'
 require 'shared_workforce/end_point'
 require 'shared_workforce/frameworks/rails' if defined?(Rails)
+require 'active_support/inflector'
+require 'active_support/core_ext/hash/indifferent_access'
 
 module SharedWorkforce
   

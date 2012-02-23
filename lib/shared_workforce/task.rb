@@ -1,4 +1,3 @@
-require 'active_support/inflector'
 module SharedWorkforce
   module Task
 
@@ -55,8 +54,6 @@ module SharedWorkforce
 
     end # ends ClassMethods
 
-    attr_reader :callback_params
-
     def initialize_default_attributes
       self.class.default_attributes.each do |name, value|
         instance_variable_set("@#{name}", value)
@@ -75,7 +72,7 @@ module SharedWorkforce
         @resource = resource_or_result
       end
 
-      @callback_params = callback_params
+      @callback_params = callback_params.with_indifferent_access if callback_params
       setup(resource) if respond_to?(:setup)
     end
 
@@ -121,10 +118,18 @@ module SharedWorkforce
         :callback_url => callback_url,
         :replace => replace,
         :text => text,
-        :callback_params => @resource ? {:resource_class_name => @resource.class.name, :resource_id => @resource.id} : {}
+        :callback_params => callback_params
       }.reject {|k,v| v.nil? }
     end
    
+    def callback_params
+      if @resource
+        {:resource_class_name => @resource.class.name, :resource_id => @resource.id}.merge(@callback_params || {}).with_indifferent_access
+      else
+        @callback_params
+      end
+    end
+
   private
 
     def find_resource
@@ -140,5 +145,6 @@ module SharedWorkforce
     def remote_request(*args)
       SharedWorkforce.configuration.request_class.new(*args)
     end
+
   end
 end

@@ -175,7 +175,14 @@ describe "Task" do
       @resource = @resource_class.new
       callback_params = {:profile_field=>'introduction'}
       task = @task_class.new(@resource, callback_params)
-      task.callback_params.should == callback_params
+      task.callback_params[:profile_field].should == 'introduction'
+    end
+
+    it "should symbolize the keys of the callback params when passed as an argument" do
+      @resource = @resource_class.new
+      callback_params = {'profile_field'=>'introduction'}
+      task = @task_class.new(@resource, callback_params)
+      task.callback_params[:profile_field].should == 'introduction'
     end
   end
 
@@ -255,6 +262,14 @@ describe "Task" do
       task = task_class.new(@resource_class.new)
       task.to_hash[:callback_params][:resource_id].should == 333
       task.to_hash[:callback_params][:resource_class_name].should == "Resource"
+    end
+
+    it "should include custom callback params in the callback params" do
+      task_class = Class.new { include SharedWorkforce::Task }
+      task = task_class.new(@resource_class.new, :profile_field=>'introduction')
+      task.to_hash[:callback_params][:resource_id].should == 333
+      task.to_hash[:callback_params][:resource_class_name].should == "Resource"
+      task.to_hash[:callback_params][:profile_field].should == 'introduction'
     end
   end
 end
