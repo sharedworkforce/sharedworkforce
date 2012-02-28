@@ -52,6 +52,12 @@ module SharedWorkforce
         self.new(result)
       end
 
+      def create(*args)
+        task = new(*args)
+        task.request
+        task
+      end
+
     end # ends ClassMethods
 
     attr_reader :attributes

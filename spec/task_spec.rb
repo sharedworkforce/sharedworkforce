@@ -79,6 +79,24 @@ describe "Task" do
     task.replace.should == true
     task.text.should == "A photo"
   end
+
+  describe ".create" do
+    it "should create a new task instance" do
+      resource = @resource_class.new
+      task_class = Class.new { include SharedWorkforce::Task }
+      task_class.any_instance.should_receive(:request)
+      task = task_class.create(resource, :field=>'name')
+      task.resource.should == resource
+      task.attributes[:field].should == 'name'
+    end
+
+    it "should pass the arguments through to Task#request" do
+      resource = @resource_class.new
+      task_class = Class.new { include SharedWorkforce::Task }
+      task_class.any_instance.should_receive(:request)
+      task_class.create(resource, :field=>'name')
+    end
+  end
   
   describe "#process_result" do
     it "should call success! and complete! with the results" do # Will become more important once we have task failure event handling
