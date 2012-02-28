@@ -48,10 +48,6 @@ module SharedWorkforce
         @default_attributes[name]
       end
 
-      def process_result(result)
-        self.new(result)
-      end
-
       def create(*args)
         task = new(*args)
         task.request
