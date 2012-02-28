@@ -45,30 +45,40 @@ If you're not using Rails, simply require the gem or include it in your Gemfile,
 
 Create a directory called 'tasks' in the root of your app. This is where you define your tasks - all files in this directory will be loaded.
 
-If, for example, you would like to have a photo tagged on upload, create your first task in a file called tasks/tag_photo.rb
+If, for example, you would like to approve a photo on upload, create your first task in a file called tasks/approve_photo.rb   
+    
+    class ApprovePhotoTask
+      include SharedWorkforce::Task
 
-    SharedWorkforce::Task.define "Tag photo" do |t|
-  
-      t.directions = "Look at this photo. Please tick all that apply."
-      t.answer_options = ['Offensive', 'Contains Nudity', 'Blurry or low quality']
-      t.answer_type = :tags
-      t.responses_required = 1
-      t.replace = true
+      title 'Approve Photo'
 
-      t.on_completion do |result|
-        photo = Photo.find(result.callback_params['photo_id'])
-        if result.answers.include?('Offensive')
-          photo.hide!
-          photo.add_comment("Photo hidden because it was offensive")
-        elsif result.answers.include?('Contains Nudity')
-          photo.refer!
-          photo.add_comment("Photo referred because it contains nudity")
-        else
-          photo.approve!
+      instruction 'Look at this photo. Please tick all that apply.'
+      responses_required 1
+
+      answer_options ['Offensive', 'Contains Nudity', 'Blurry or low quality', 'Upside down or sideways']
+      answer_type :tags
+      image_url "http://www.google.com/logo.png"
+
+      replace true
+
+      on_complete :moderate_photo
+      on_failure :photo_referred
+
+      def moderate_photo(photo, responses)
+        photo.hide!
+        if responses.answers.include?('Offensive')
+          photo.add_comment("Photo is offensive")
         end
+        puts "Photo Moderated"
       end
 
+      def photo_referred(photo, responses)
+        photo.refer!
+        photo.add_comment("Photo responses")
+        puts "Failure"
+      end
     end
+    
 
 ### Step 4 - request tasks
 
@@ -101,27 +111,35 @@ SharedWorkforce currently supports 2 types of task. :tags (multiple select) and 
 
 SharedWorkforce supports multiple responses for each task. The callback method provides you with an array of responses from multiple workers. You can create your own logic to decide what to do. This is useful if you want to prevent destructive action unless a number of workers agree.
 
-    SharedWorkforce::Task.define "Tag photo" do |t|
-  
-      t.directions = "Look at this photo. Please tick all that apply."
-      t.answer_options = ['Offensive', 'Contains Nudity', 'Blurry or low quality']
-      t.answer_type = :tags
-      t.responses_required = 3
+    class ApprovePhotoTask
+      include SharedWorkforce::Task
 
-      t.on_completion do |result|
-        photo = Photo.find(result.callback_params['photo_id'])
+      title 'Approve Photo'
+
+      instruction 'Look at this photo. Please tick all that apply.'
+      responses_required 3
+
+      answer_options ['Offensive', 'Contains Nudity', 'Blurry or low quality', 'Upside down or sideways']
+      answer_type :tags
+
+      on_complete :moderate_photo
+
+      def moderate_photo(photo, responses)
         photo.hide! if result.answers.all? { |a| a == 'Contains Nudity' }
+        end
       end
 
     end
+    
 
 ###Replacing tasks
 
 The "replace" option allows you to overwrite or update any existing tasks with the same name and callback params. This could be useful in the example to handle the situation where a user re-uploads their photo - you may only care about the latest one.
 
-    SharedWorkforce::Task.define "Tag photo" do |t|
+    class ApprovePhotoTask
+      include SharedWorkforce::Task
       ...
-      t.replace=true
+      replace true
       ...  
     end
 
@@ -129,7 +147,7 @@ The "replace" option allows you to overwrite or update any existing tasks with t
 
 You can cancel tasks when they are no longer relevant.
  
-    class Photo < ActiveRecord::Base
+    class ApprovePhotoTask
       after_destroy :cancel_tagging_request
 
       def cancel_tagging_request
