@@ -147,7 +147,7 @@ module SharedWorkforce
         {}
       end
 
-      @attributes.merge!({:resource_class_name => @resource.class.name, :resource_id => @resource.id}) if resource
+      @attributes.merge!({:_resource => {:class_name => @resource.class.name, :id => @resource.id}}) if resource
     end
 
   end

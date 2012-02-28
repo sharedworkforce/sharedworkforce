@@ -276,15 +276,15 @@ describe "Task" do
     it "should include the class name and id of the resource in the callback params" do
       task_class = Class.new { include SharedWorkforce::Task }
       task = task_class.new(@resource_class.new)
-      task.to_hash[:callback_params][:resource_id].should == 333
-      task.to_hash[:callback_params][:resource_class_name].should == "Resource"
+      task.to_hash[:callback_params][:_resource][:id].should == 333
+      task.to_hash[:callback_params][:_resource][:class_name].should == "Resource"
     end
 
     it "should include custom callback params in the callback params" do
       task_class = Class.new { include SharedWorkforce::Task }
       task = task_class.new(@resource_class.new, :profile_field=>'introduction')
-      task.to_hash[:callback_params][:resource_id].should == 333
-      task.to_hash[:callback_params][:resource_class_name].should == "Resource"
+      task.to_hash[:callback_params][:_resource][:id].should == 333
+      task.to_hash[:callback_params][:_resource][:class_name].should == "Resource"
       task.to_hash[:callback_params][:profile_field].should == 'introduction'
     end
   end
