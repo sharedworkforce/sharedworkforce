@@ -54,7 +54,7 @@ module SharedWorkforce
 
     end # ends ClassMethods
 
-    attr_reader :callback_params
+    attr_reader :attributes
 
     def initialize_default_attributes
       self.class.default_attributes.each do |name, value|
@@ -62,7 +62,7 @@ module SharedWorkforce
       end
     end
 
-    def initialize(resource_or_result=nil, callback_params=nil)
+    def initialize(resource_or_result=nil, attributes=nil)
       initialize_default_attributes
       if resource_or_result.is_a?(TaskResult)
         @result = resource_or_result
@@ -74,7 +74,7 @@ module SharedWorkforce
         @resource = resource_or_result
       end
 
-      initialize_callback_params(@resource, callback_params)
+      initialize_attributes(@resource, attributes)
       setup(resource) if respond_to?(:setup)
     end
 
@@ -120,7 +120,7 @@ module SharedWorkforce
         :callback_url => callback_url,
         :replace => replace,
         :text => text,
-        :callback_params => callback_params
+        :callback_params => attributes
       }.reject {|k,v| v.nil? }
     end
 
@@ -140,14 +140,14 @@ module SharedWorkforce
       SharedWorkforce.configuration.request_class.new(*args)
     end
 
-    def initialize_callback_params(resource, callback_params)
-      @callback_params = if callback_params
-        callback_params.with_indifferent_access
+    def initialize_attributes(resource, attributes)
+      @attributes = if attributes
+        attributes.with_indifferent_access
       else
         {}
       end
 
-      @callback_params.merge!({:resource_class_name => @resource.class.name, :resource_id => @resource.id}) if resource
+      @attributes.merge!({:resource_class_name => @resource.class.name, :resource_id => @resource.id}) if resource
     end
 
   end

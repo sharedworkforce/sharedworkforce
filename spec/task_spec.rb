@@ -151,7 +151,7 @@ describe "Task" do
       it "should pass the resource to the callback method as the first argument and the result as the second argument" do
         result = SharedWorkforce::TaskResult.new({})
         @task.should_receive(:try_again).with(@resource, @result.responses)
-        @task.fail!(@result)
+        @task.fail!(@result)  
       end
 
       it "should not raise an error if there is no callback defined" do
@@ -181,24 +181,24 @@ describe "Task" do
 
     it "should set the callback params when passed as an argument" do
       @resource = @resource_class.new
-      callback_params = {:profile_field=>'introduction'}
-      task = @task_class.new(@resource, callback_params)
-      task.callback_params[:profile_field].should == 'introduction'
+      attributes = {:profile_field=>'introduction'}
+      task = @task_class.new(@resource, attributes)
+      task.attributes[:profile_field].should == 'introduction'
     end
 
     it "should symbolize the keys of the callback params when passed as an argument" do
       @resource = @resource_class.new
-      callback_params = {'profile_field'=>'introduction'}
-      task = @task_class.new(@resource, callback_params)
-      task.callback_params[:profile_field].should == 'introduction'
+      attributes = {'profile_field'=>'introduction'}
+      task = @task_class.new(@resource, attributes)
+      task.attributes[:profile_field].should == 'introduction'
     end
   end
 
-  describe ".callback_params[]" do
+  describe ".attributes[]" do
     it "should allow callback params to be set" do
       task = Class.new { include SharedWorkforce::Task }.new(@resource_class.new, {})
-      task.callback_params[:profile_field] = 'introduction'
-      task.callback_params[:profile_field].should == 'introduction'
+      task.attributes[:profile_field] = 'introduction'
+      task.attributes[:profile_field].should == 'introduction'
     end
   end
 
