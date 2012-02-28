@@ -186,6 +186,14 @@ describe "Task" do
     end
   end
 
+  describe ".callback_params[]" do
+    it "should allow callback params to be set" do
+      task = Class.new { include SharedWorkforce::Task }.new(@resource_class.new, {})
+      task.callback_params[:profile_field] = 'introduction'
+      task.callback_params[:profile_field].should == 'introduction'
+    end
+  end
+
   describe "#request" do
     it "should make a new task http request" do
       task = Class.new { include SharedWorkforce::Task }
