@@ -84,15 +84,15 @@ module SharedWorkforce
     end
 
     def success!(result)
-      send(@on_success.to_sym, resource, result) if @on_success
+      send(@on_success.to_sym, resource, result.responses) if @on_success
     end
 
     def complete!(result)
-      send(@on_complete.to_sym, resource, result) if @on_complete
+      send(@on_complete.to_sym, resource, result.responses) if @on_complete
     end
 
     def fail!(result)
-      send(@on_failure.to_sym, resource, result) if @on_failure
+      send(@on_failure.to_sym, resource, result.responses) if @on_failure
     end
 
     def resource

@@ -8,16 +8,16 @@ module SharedWorkforce
     
     def initialize(params)
       self.callback_params = params['callback_params']
-      self.responses = TaskResponse.create_collection_from_array(params['responses']) if params['responses']
+      @responses = TaskResponse.create_collection_from_array(params['responses']) if params['responses']
       self.name = params['name']
     end
     
-    def answers
-      responses.map(&:answer).flatten
+    def responses
+      @responses.map(&:to_hash)
     end
     
     def usernames
-      responses.map(&:username).flatten
+      @responses.map(&:username).flatten
     end
     
     def process!

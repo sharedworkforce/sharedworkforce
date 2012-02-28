@@ -8,10 +8,24 @@ describe "TaskResult" do
     end
   end
   
-  describe "#answers" do
-    it "should collect the answers" do  
-      r = SharedWorkforce::TaskResult.new({'callback_params'=>{'resource_id' => '2'}, 'responses'=>[{'answer'=>'yes'}, {'answer'=>'no'}, {'answer'=>'yes'}], 'name'=>"Approve photo"})
-      r.answers.should == ['yes', 'no', 'yes']
+  describe "#responses" do
+    it "should convert the result to a hash" do
+      r = SharedWorkforce::TaskResult.new(
+        {'callback_params'=>{'resource_id' => '2'},
+         'responses'=>[
+            {'answer'=>'yes', 'username'=>'bilbo'},
+            {'answer'=>'no', 'username'=>'frodo'},
+            {'answer'=>'yes', 'username'=>'sam'}
+          ],
+        'name'=>"Approve photo"
+        }
+      )
+
+      r.responses.should == [
+        {:answer=>'yes', :answered_by=>'bilbo'},
+        {:answer=>'no', :answered_by=>'frodo'},
+        {:answer=>'yes', :answered_by=>'sam'}
+      ]
     end
   end
   
@@ -21,4 +35,5 @@ describe "TaskResult" do
       r.usernames.should == ['bilbo', 'frodo', 'sam']
     end
   end
+
 end
