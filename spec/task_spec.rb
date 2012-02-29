@@ -233,10 +233,10 @@ describe "Task" do
   
   describe "#cancel" do
     it "should send a cancel task http request" do
-      task = Class.new { include SharedWorkforce::Task }
+      task_class = Class.new { include SharedWorkforce::Task }
 
       stub_request(:post, "http://api.sharedworkforce.com/tasks/cancel")
-      task.new.cancel(:request_id=>'123')
+      task_class.cancel(@resource_class.new)
       a_request(:post, "http://api.sharedworkforce.com/tasks/cancel").should have_been_made.once
     end
 

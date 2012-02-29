@@ -54,6 +54,12 @@ module SharedWorkforce
         task
       end
 
+      def cancel(*args)
+        task = new(*args)
+        task.cancel
+        task
+      end
+
     end # ends ClassMethods
 
     attr_reader :attributes
@@ -106,7 +112,7 @@ module SharedWorkforce
       task_request.create
     end
     
-    def cancel(options)
+    def cancel(options = {})
       task_request = remote_request(self, options)
       task_request.cancel
     end
