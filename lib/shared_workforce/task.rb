@@ -149,7 +149,8 @@ module SharedWorkforce
         {}
       end
 
-      @attributes.merge!({:_resource => {:class_name => @resource.class.name, :id => @resource.id}}) if resource
+      @attributes[:_task] = {:class_name => self.class.name}
+      @attributes[:_task][:resource] = {:class_name => @resource.class.name, :id => @resource.id} if resource
     end
 
   end

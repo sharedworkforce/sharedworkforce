@@ -123,13 +123,14 @@ describe "Task" do
       @resource = @resource_class.new
       @task = @task_class.new(@resource)
       @result = SharedWorkforce::TaskResult.new(
-        {'callback_params'=>{'resource_id' => '2'},
+        {
          'responses'=>[
             {'answer'=>'yes', 'username'=>'bilbo'},
             {'answer'=>'no', 'username'=>'frodo'},
             {'answer'=>'yes', 'username'=>'sam'}
           ],
-        'name'=>"Approve photo"
+        'name'=>"Approve photo",
+        'callback_params'=>@task.attributes
         }
       )
     end
@@ -141,7 +142,7 @@ describe "Task" do
       end
 
       it "should pass the resource to the callback method as the first argument and the result as the second argument" do
-        result = SharedWorkforce::TaskResult.new({})
+        result = SharedWorkforce::TaskResult.new(:callback_params=>@task.attributes)
         @task.should_receive(:do_work).with(@resource, @result.responses)
         @task.success!(@result)
       end
@@ -294,16 +295,23 @@ describe "Task" do
     it "should include the class name and id of the resource in the callback params" do
       task_class = Class.new { include SharedWorkforce::Task }
       task = task_class.new(@resource_class.new)
-      task.to_hash[:callback_params][:_resource][:id].should == 333
-      task.to_hash[:callback_params][:_resource][:class_name].should == "Resource"
+      task.to_hash[:callback_params][:_task][:resource][:id].should == 333
+      task.to_hash[:callback_params][:_task][:resource][:class_name].should == "Resource"
     end
 
     it "should include custom callback params in the callback params" do
       task_class = Class.new { include SharedWorkforce::Task }
       task = task_class.new(@resource_class.new, :profile_field=>'introduction')
-      task.to_hash[:callback_params][:_resource][:id].should == 333
-      task.to_hash[:callback_params][:_resource][:class_name].should == "Resource"
+      task.to_hash[:callback_params][:_task][:resource][:id].should == 333
+      task.to_hash[:callback_params][:_task][:resource][:class_name].should == "Resource"
       task.to_hash[:callback_params][:profile_field].should == 'introduction'
+    end
+
+    it "should include the class name of the task" do
+      task = ApprovePhotoTask.new(@resource_class.new, :profile_field=>'introduction')
+      task.to_hash[:callback_params][:_task][:resource][:id].should == 333
+      task.to_hash[:callback_params][:_task][:resource][:class_name].should == "Resource"
+      task.to_hash[:callback_params][:_task][:class_name].should == 'ApprovePhotoTask'
     end
   end
 end

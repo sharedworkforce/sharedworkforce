@@ -7,9 +7,10 @@ module SharedWorkforce
     attr_accessor :status
     
     def initialize(params)
-      self.callback_params = params['callback_params']
-      @responses = TaskResponse.create_collection_from_array(params['responses']) if params['responses']
-      self.name = params['name']
+      params = params.with_indifferent_access
+      self.callback_params = params[:callback_params]
+      @responses = TaskResponse.create_collection_from_array(params[:responses]) if params[:responses]
+      self.name = callback_params[:_task][:class_name] if callback_params && callback_params[:_task] && callback_params[:_task][:class_name]
     end
     
     def responses
@@ -21,10 +22,10 @@ module SharedWorkforce
     end
     
     def process!
-      if task = find_task(name)
+      if name && task = find_task(name)
         task.new(self)
       else
-        raise "The task #{name} could not be found"
+        raise TaskNotFound, "The task #{name} could not be found"
       end
     end
    
