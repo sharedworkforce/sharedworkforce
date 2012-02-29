@@ -59,10 +59,7 @@ If, for example, you would like to approve a photo on upload, create your first 
       answer_type :tags
       image_url "http://www.google.com/logo.png"
 
-      replace true
-
-      on_complete :moderate_photo
-      on_failure :photo_referred
+      on_success :moderate_photo
 
       def moderate_photo(photo, responses)
         photo.hide!
