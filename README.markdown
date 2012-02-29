@@ -82,19 +82,17 @@ If, for example, you would like to approve a photo on upload, create your first 
 
 ### Step 4 - request tasks
 
-Publishing tasks is simply a case of calling SharedWorkforce::Task.request(name, options).  If you are using Rails, this could be done in an after save callback on a model:
+Publishing tasks is simply a case of calling `TaskClass.create()`.  If you are using Rails, this could be done in an after save callback on a model:
 
     class Photo < ActiveRecord::Base
     
-      after_create :request_tags
+      after_create :approve_photo
     
-      def request_tags
-        SharedWorkforce::Task.request "Tag photo", {:image_url => self.url, :callback_params => { :photo_id => self.id} }
+      def approve_photo
+        ApprovePhotoTask.create(self)
       end
     end
 
-
-That's it - once your task is completed the callback you have defined in the task definition will be called. Everything you define in the :callback_params option will be sent back to your callback as shown in the example.
 
 Advanced definition options
 ----------------------------------------
