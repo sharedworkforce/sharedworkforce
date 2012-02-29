@@ -63,7 +63,7 @@ If, for example, you would like to approve a photo on upload, create your first 
 
       def moderate_photo(photo, responses)
         photo.hide!
-        if responses.answers.include?('Offensive')
+        if responses.map { |r| r[:answer] }.include?('Offensive')
           photo.add_comment("Photo is offensive")
         end
         puts "Photo Moderated"
@@ -115,8 +115,7 @@ SharedWorkforce supports multiple responses for each task. The callback method p
       on_complete :moderate_photo
 
       def moderate_photo(photo, responses)
-        photo.hide! if result.answers.all? { |a| a == 'Contains Nudity' }
-        end
+        photo.hide! if responses.map { |r| r[:answer] }.all? { |a| a.include?('Contains Nudity') }
       end
 
     end
