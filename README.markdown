@@ -68,12 +68,7 @@ If, for example, you would like to approve a photo on upload, create your first 
         end
         puts "Photo Moderated"
       end
-
-      def photo_referred(photo, responses)
-        photo.refer!
-        photo.add_comment("Photo responses")
-        puts "Failure"
-      end
+      
     end
     
 
