@@ -4,7 +4,7 @@ describe "TaskResult" do
   describe "#process!" do
     it "should invoke Task#process_result" do
       ApprovePhotoTask.any_instance.should_receive(:process_result).once
-      SharedWorkforce::TaskResult.new({'callback_params'=>{'_task'=>{'class_name'=>'Approve photo'}, 'resource_id' => '2', 'responses'=>[{'answer'=>'yes'}], 'name'=>"Approve photo please"}}).process!
+      SharedWorkforce::TaskResult.new({'callback_params'=>{'_task'=>{'class_name'=>'ApprovePhotoTask'}, 'resource_id' => '2', 'responses'=>[{'answer'=>'yes'}], 'name'=>"Approve photo please"}}).process!
     end
   end
   

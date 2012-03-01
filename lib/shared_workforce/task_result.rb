@@ -31,7 +31,7 @@ module SharedWorkforce
    
   private
     def find_task(name)
-      "#{name.gsub(' ', '_').classify}Task".constantize
+      name.constantize
     end
   end
 end
