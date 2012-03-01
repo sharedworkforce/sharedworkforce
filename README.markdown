@@ -62,8 +62,8 @@ If, for example, you would like to approve a photo on upload, create your first 
       on_success :moderate_photo
 
       def moderate_photo(photo, responses)
-        photo.hide!
         if responses.map { |r| r[:answer] }.include?('Offensive')
+          photo.hide!
           photo.add_comment("Photo is offensive")
         end
         puts "Photo Moderated"
