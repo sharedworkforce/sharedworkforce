@@ -136,11 +136,11 @@ The "replace" option allows you to overwrite or update any existing tasks with t
 
 You can cancel tasks when they are no longer relevant.
  
-    class ApprovePhotoTask
+    class Photo
       after_destroy :cancel_tagging_request
 
       def cancel_tagging_request
-        SharedWorkforce::Task.cancel "Classify photo", :callback_params=>{:photo_id=>self.id})
+        ApprovePhotoTask.cancel(self)
       end
     end
 
