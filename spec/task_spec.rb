@@ -280,7 +280,7 @@ describe "Task" do
     it "should return the resource from the callback params" do
       class ResourceFinder; def self.find(id); return "#{id}ABCD"; end; end
       task_class = Class.new { include SharedWorkforce::Task }
-      task = task_class.new(SharedWorkforce::TaskResult.new({'callback_params'=>{'resource_class_name'=>'ResourceFinder', 'resource_id' => '2'}}))
+      task = task_class.new(SharedWorkforce::TaskResult.new({'callback_params'=>{'_task'=>{'resource'=>{'class_name'=>'ResourceFinder', 'id' => '2'}}}}))
       task.resource.should == "2ABCD"
     end
 

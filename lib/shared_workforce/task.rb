@@ -135,8 +135,8 @@ module SharedWorkforce
   private
 
     def find_resource
-      if @result && @result.callback_params['resource_class_name'] && @result.callback_params['resource_id']
-        @result.callback_params['resource_class_name'].constantize.find(@result.callback_params['resource_id'])
+      if @result && @result.callback_params[:_task] && resource_params = @result.callback_params[:_task][:resource]
+        resource_params[:class_name].constantize.find(resource_params[:id])
       end
     end
     
