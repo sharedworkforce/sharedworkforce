@@ -80,13 +80,14 @@ module SharedWorkforce
           raise ArgumentError, "The resource you pass to new should respond to #id and it's class should respond to .find (or be an instance of ActiveRecord::Base) so it can be reloaded."
         end 
         @resource = resource_or_result
+        initialize_attributes(attributes)
       end
-
-      initialize_attributes(@resource, attributes)
+      
       setup(resource) if respond_to?(:setup)
     end
 
     def process_result(result)
+      initialize_attributes(result.callback_params)
       success!(result)
       complete!(result)
     end
@@ -148,7 +149,7 @@ module SharedWorkforce
       SharedWorkforce.configuration.request_class.new(*args)
     end
 
-    def initialize_attributes(resource, attributes)
+    def initialize_attributes(attributes)
       @attributes = if attributes
         attributes.with_indifferent_access
       else
@@ -156,7 +157,7 @@ module SharedWorkforce
       end
 
       @attributes[:_task] = {:class_name => self.class.name}
-      @attributes[:_task][:resource] = {:class_name => @resource.class.name, :id => @resource.id} if resource
+      @attributes[:_task][:resource] = {:class_name => @resource.class.name, :id => @resource.id} if @resource
     end
 
   end

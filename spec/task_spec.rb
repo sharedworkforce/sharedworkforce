@@ -80,6 +80,16 @@ describe "Task" do
     task.text.should == "A photo"
   end
 
+  describe ".new" do
+    it "should set the attributes from the task result callback params" do
+      task_class = Class.new { include SharedWorkforce::Task; on_success :do_work; def do_work(*args); end; def setup(*args); end }
+      task_class.any_instance.should_receive(:success!)
+      task_class.any_instance.should_receive(:complete!)
+      task = task_class.new(SharedWorkforce::TaskResult.new({'callback_params'=>{'key'=>'value'}}))
+      task.attributes[:key].should == 'value'
+    end
+  end
+
   describe ".create" do
     it "should create a new task instance" do
       resource = @resource_class.new
