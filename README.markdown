@@ -91,11 +91,7 @@ Advanced definition options
 
 ### Task types
 
-SharedWorkforce currently supports 2 types of task. :tags (multiple select) and :choice (single answer from a list of options).  Free-form input is planned in the near future.
-
-    SharedWorkforce::Task.define |t|
-      t.answer_type = #:tags or :choice
-    end
+SharedWorkforce currently supports 3 types of task. `:tags` (multiple select), `:choice` (single answer from a list of options), or `:edit` (edit text).
 
 ###Multiple responses
 
