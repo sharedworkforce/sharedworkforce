@@ -9,7 +9,7 @@ module SharedWorkforce
     
     def initialize
       @http_end_point = "http://api.sharedworkforce.com"
-      @request_class = TaskRequest::Http
+      @request_class = default_request_class
     end
     
     def callback_url
@@ -18,7 +18,23 @@ module SharedWorkforce
     
     def callback_path
       @callback_path ||= "hci_task_result"
-    end 
+    end
+
+    private
+
+    def default_request_class
+      if defined?(Rails)
+        if Rails.env.development?
+          TaskRequest::HttpWithPoller
+        elsif Rails.env.test?
+          TaskRequest::BlackHole
+        else
+          TaskRequest::Http
+        end
+      else
+        TaskRequest::Http
+      end
+    end
     
   end
 end
