@@ -1,6 +1,7 @@
 module SharedWorkforce
   class ResponsePoller
     def self.start(task_id)
+      Thread.abort_on_exception = true
       Thread.new do
         puts "SharedWorkforce: Checking every 20 seconds for responses for task #{task_id}."
         while true
