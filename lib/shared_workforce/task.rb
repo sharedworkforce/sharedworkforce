@@ -11,6 +11,7 @@ module SharedWorkforce
         :replace,
         :answer_options,
         :image_url,
+        :image_crop_ratio,
         :text,
         :on_success,
         :on_failure,

@@ -5,7 +5,7 @@ describe "TaskRequest::Http" do
     it "should invoke a task request" do
       
       task = ApprovePhotoTask.new
-      task_request = SharedWorkforce::TaskRequest::Http.new(task, :image_url=>"http://www.google.com/logo.png", :callback_params=>{:resource_id=>'1234'})
+      task_request = SharedWorkforce::TaskRequest::Http.new(task, :image_url=>"http://www.google.com/logo.png", :image_crop_ratio=>1.7, :callback_params=>{:resource_id=>'1234'})
     
       stub_request(:post, "api.sharedworkforce.com/tasks")
       task_request.create
@@ -14,6 +14,7 @@ describe "TaskRequest::Http" do
           'title'=>"Approve Photo",
           'instruction'=>"Please classify this photo by choosing the appropriate tickboxes.",
           'image_url'=>"http://www.google.com/logo.png",
+          'image_crop_ratio'=>1.7,
           'answer_options'=> ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways', 'Contains more than one person in the foreground', 'Has people in the background', 'Contains children'],
           'responses_required'=>3,
           'answer_type'=>'tags',

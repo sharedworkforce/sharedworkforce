@@ -15,6 +15,8 @@ describe "Task" do
       instruction 'Please classify this photo by choosing the appropriate tickboxes.'
       responses_required 3
       image_url "http://www.google.com/logo.png"
+      answer_type :crop
+      image_crop_ratio 1.7
 
       answer_options ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways']
 
@@ -35,6 +37,7 @@ describe "Task" do
     task.title.should == "Approve Photo"
     task.responses_required.should == 3
     task.image_url.should == "http://www.google.com/logo.png"
+    task.image_crop_ratio.should == 1.7
     task.answer_options.should == ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways']
   end
 
