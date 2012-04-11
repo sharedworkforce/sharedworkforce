@@ -22,9 +22,9 @@ describe "TaskResult" do
       )
 
       r.responses.should == [
-        {:answer=>'yes', :answered_by=>'bilbo'},
-        {:answer=>'no', :answered_by=>'frodo'},
-        {:answer=>'yes', :answered_by=>'sam'}
+        {'answer'=>'yes', 'answered_by'=>'bilbo'},
+        {'answer'=>'no', 'answered_by'=>'frodo'},
+        {'answer'=>'yes', 'answered_by'=>'sam'}
       ]
     end
   end

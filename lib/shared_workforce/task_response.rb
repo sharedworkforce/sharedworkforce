@@ -6,7 +6,7 @@ module SharedWorkforce
     end
     
     def to_hash
-      {:answer=>answer, :answered_by=>username, :new_image_url=>new_image_url}.reject {|k,v| v.nil? }
+      {:answer=>answer, :answered_by=>username, :new_image_url=>new_image_url}.reject {|k,v| v.nil? }.with_indifferent_access
     end
 
     attr_accessor :answer, :callback_params, :username, :new_image_url

@@ -20,9 +20,15 @@ describe "TaskResponse" do
       t = SharedWorkforce::TaskResponse.new('username'=>'bilbo')
       t.to_hash[:answered_by].should == 'bilbo'
     end
+
     it "should include new_image_url" do
       t = SharedWorkforce::TaskResponse.new('new_image_url'=>'http://www.example.com/image.jpg')
       t.to_hash[:new_image_url].should == 'http://www.example.com/image.jpg'
+    end
+
+    it "should have indifferent access" do
+      t = SharedWorkforce::TaskResponse.new('new_image_url'=>'http://www.example.com/image.jpg')
+      t.to_hash['new_image_url'].should == 'http://www.example.com/image.jpg'
     end
   end
 end
