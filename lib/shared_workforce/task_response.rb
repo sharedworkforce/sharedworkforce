@@ -6,15 +6,16 @@ module SharedWorkforce
     end
     
     def to_hash
-      {:answer=>answer, :answered_by=>username}
+      {:answer=>answer, :answered_by=>username, :new_image_url=>new_image_url}.reject {|k,v| v.nil? }
     end
 
-    attr_accessor :answer, :callback_params, :username
+    attr_accessor :answer, :callback_params, :username, :new_image_url
     
     def initialize(params)
       @answer = params['answer']
       @callback_params = params['callback_params']
       @username = params['username']
+      @new_image_url = params['new_image_url']
     end
   
   end

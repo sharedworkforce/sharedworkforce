@@ -14,4 +14,15 @@ describe "TaskResponse" do
       r[1].username.should == "frodo"
     end
   end
+
+  describe "#to_hash" do
+    it "should include answered_by" do
+      t = SharedWorkforce::TaskResponse.new('username'=>'bilbo')
+      t.to_hash[:answered_by].should == 'bilbo'
+    end
+    it "should include new_image_url" do
+      t = SharedWorkforce::TaskResponse.new('new_image_url'=>'http://www.example.com/image.jpg')
+      t.to_hash[:new_image_url].should == 'http://www.example.com/image.jpg'
+    end
+  end
 end
