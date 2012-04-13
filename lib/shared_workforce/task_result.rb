@@ -1,16 +1,27 @@
 module SharedWorkforce
   class TaskResult
    
-    attr_accessor :callback_params
+    attr_reader :callback_params
     attr_accessor :responses
     attr_accessor :name
     attr_accessor :status
+    attr_accessor :task_hash
     
     def initialize(params)
       params = params.with_indifferent_access
-      self.callback_params = params[:callback_params]
+      
+      self.task_hash = if params[:task]
+        params[:task]
+      else
+        params
+      end
+      
       @responses = TaskResponse.create_collection_from_array(params[:responses]) if params[:responses]
       self.name = callback_params[:_task][:class_name] if callback_params && callback_params[:_task] && callback_params[:_task][:class_name]
+    end
+
+    def callback_params
+      task_hash[:callback_params]
     end
     
     def responses
