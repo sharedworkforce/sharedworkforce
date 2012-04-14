@@ -1,7 +1,7 @@
 Shared Workforce Client
 =======================
 
-[![Build Status](https://secure.travis-ci.org/samoli/shared-workforce.png)](http://travis-ci.org/#!/sharedworkforce/sharedworkforce)
+[![Build Status](https://secure.travis-ci.org/sharedworkforce/sharedworkforce.png)](http://travis-ci.org/#!/sharedworkforce/sharedworkforce)
 
 Shared Workforce is a platform for managing and completing repetitive tasks that require human intelligence. For example, tagging photos, approving text and answering simple questions.
 
