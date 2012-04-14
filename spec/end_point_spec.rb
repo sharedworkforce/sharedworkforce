@@ -1,5 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
-require 'rack'
+
 describe "EndPoint" do
 
   describe "#process_request" do
