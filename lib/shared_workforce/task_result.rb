@@ -16,7 +16,7 @@ module SharedWorkforce
         params
       end
       
-      @responses = TaskResponse.create_collection_from_array(params[:responses]) if params[:responses]
+      @responses = TaskResponse.create_collection_from_array(task_hash[:responses]) if task_hash[:responses]
       self.name = callback_params[:_task][:class_name] if callback_params && callback_params[:_task] && callback_params[:_task][:class_name]
     end
 

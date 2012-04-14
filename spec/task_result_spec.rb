@@ -26,13 +26,16 @@ describe "TaskResult" do
   describe "#responses" do
     it "should convert the result to a hash" do
       r = SharedWorkforce::TaskResult.new(
-        {'callback_params'=>{'resource_id' => '2'},
-         'responses'=>[
-            {'answer'=>'yes', 'username'=>'bilbo'},
-            {'answer'=>'no', 'username'=>'frodo'},
-            {'answer'=>'yes', 'username'=>'sam'}
-          ],
-        'name'=>"Approve photo"
+        {'task' => 
+          {
+            'name'=>"Approve photo",
+            'callback_params'=>{'resource_id' => '2'},
+            'responses'=>[
+              {'answer'=>'yes', 'username'=>'bilbo'},
+              {'answer'=>'no', 'username'=>'frodo'},
+              {'answer'=>'yes', 'username'=>'sam'}
+            ]
+          }
         }
       )
 
