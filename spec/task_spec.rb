@@ -88,7 +88,7 @@ describe "Task" do
       task_class = Class.new { include SharedWorkforce::Task; on_success :do_work; def do_work(*args); end; def setup(*args); end }
       task_class.any_instance.should_receive(:success!)
       task_class.any_instance.should_receive(:complete!)
-      task = task_class.new(SharedWorkforce::TaskResult.new({'callback_params'=>{'key'=>'value'}}))
+      task = task_class.new(SharedWorkforce::TaskResult.new({'task'=>{'callback_params'=>{'key'=>'value'}}}))
       task.attributes[:key].should == 'value'
     end
   end
@@ -155,7 +155,7 @@ describe "Task" do
       end
 
       it "should pass the resource to the callback method as the first argument and the result as the second argument" do
-        result = SharedWorkforce::TaskResult.new(:callback_params=>@task.attributes)
+        result = SharedWorkforce::TaskResult.new({'task'=>{'callback_params'=>@task.attributes}})
         @task.should_receive(:do_work).with(@resource, @result.responses)
         @task.success!(@result)
       end
@@ -293,13 +293,13 @@ describe "Task" do
     it "should return the resource from the callback params" do
       class ResourceFinder; def self.find(id); return "#{id}ABCD"; end; end
       task_class = Class.new { include SharedWorkforce::Task }
-      task = task_class.new(SharedWorkforce::TaskResult.new({'callback_params'=>{'_task'=>{'resource'=>{'class_name'=>'ResourceFinder', 'id' => '2'}}}}))
+      task = task_class.new(SharedWorkforce::TaskResult.new({'api_key'=>SharedWorkforce.configuration.api_key, 'task'=>{'callback_params'=>{'_task'=>{'resource'=>{'class_name'=>'ResourceFinder', 'id' => '2'}}}}}))
       task.resource.should == "2ABCD"
     end
 
     it "should return nil if the callback params do not specify a resource" do
       task_class = Class.new { include SharedWorkforce::Task }
-      task = task_class.new(SharedWorkforce::TaskResult.new({'callback_params'=>{}}))
+      task = task_class.new(SharedWorkforce::TaskResult.new({'api_key'=>SharedWorkforce.configuration.api_key, 'task'=>{'callback_params'=>{}}}))
       task.resource.should == nil
     end
   end

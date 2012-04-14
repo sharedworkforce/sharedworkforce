@@ -1,26 +1,26 @@
 module SharedWorkforce
   class EndPoint
 
-    def initialize(app)
+    def initialize(app = nil)
       @app = app
     end
 
     def call(env)
       if env["PATH_INFO"] =~ /^\/#{callback_path}/
-        process_request(env)
+        Rack::Request.new(env)
+        process_response(req.body.read)
       else
-        @app.call(env)
+        @app.call(env) if @app.respond_to? :call
       end
-
     end
 
-    private
-
-    def process_request(env)
-      req = Rack::Request.new(env)
-      body = JSON.parse(req.body.read)
-      puts "processing task callback"
+    def process_response(body)
+      body = JSON.parse(body)
+      puts "Processing Shared Workforce task callback"
       puts body.inspect
+      
+      raise SecurityTransgression unless valid_api_key?(body['api_key'])
+      
       SharedWorkforce::TaskResult.new(body).process!
     
       [ 200,
@@ -32,6 +32,12 @@ module SharedWorkforce
     
     def callback_path
       SharedWorkforce.configuration.callback_path
+    end
+
+    private
+
+    def valid_api_key?(key)
+      key == SharedWorkforce.configuration.api_key
     end
 
   end

@@ -4,7 +4,7 @@ describe "TaskResult" do
 
   before(:each) do
     @task_result_hash = {
-      'task' => {  
+      'task' => { 
         'name'=>"Approve photo please",
         'callback_params' => 
         {
@@ -61,7 +61,7 @@ describe "TaskResult" do
   
   describe "#usernames" do
     it "should collect the usernames" do  
-      r = SharedWorkforce::TaskResult.new({'callback_params'=>{'resource_id' => '2'}, 'responses'=>[{'answer'=>'yes', 'username'=>'bilbo'}, {'answer'=>'no', 'username'=>'frodo'}, {'answer'=>'yes', 'username'=>'sam'}], 'name'=>"Approve photo"})
+      r = SharedWorkforce::TaskResult.new('task'=>{'callback_params'=>{'resource_id' => '2'}, 'responses'=>[{'answer'=>'yes', 'username'=>'bilbo'}, {'answer'=>'no', 'username'=>'frodo'}, {'answer'=>'yes', 'username'=>'sam'}], 'name'=>"Approve photo"})
       r.usernames.should == ['bilbo', 'frodo', 'sam']
     end
   end
