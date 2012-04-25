@@ -17,6 +17,7 @@ describe "Task" do
       image_url "http://www.google.com/logo.png"
       answer_type :crop
       image_crop_ratio 1.7
+      guidelines "* be careful"
 
       answer_options ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways']
 
@@ -39,6 +40,7 @@ describe "Task" do
     task.image_url.should == "http://www.google.com/logo.png"
     task.image_crop_ratio.should == 1.7
     task.answer_options.should == ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways']
+    task.guidelines.should == "* be careful"
   end
 
   it "should allow certain default attributes to be overwritten" do
@@ -325,6 +327,12 @@ describe "Task" do
       task.to_hash[:callback_params][:_task][:resource][:id].should == 333
       task.to_hash[:callback_params][:_task][:resource][:class_name].should == "Resource"
       task.to_hash[:callback_params][:_task][:class_name].should == 'ApprovePhotoTask'
+    end
+
+    it "should include the guidelines" do
+      task = ApprovePhotoTask.new(@resource_class.new)
+      task.guidelines = "* be careful"
+      task.to_hash[:guidelines].should == '* be careful'
     end
   end
 end

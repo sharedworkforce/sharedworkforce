@@ -7,6 +7,7 @@ module SharedWorkforce
         :title,
         :answer_type,
         :instruction,
+        :guidelines,
         :responses_required,
         :replace,
         :answer_options,
@@ -123,6 +124,7 @@ module SharedWorkforce
       {
         :title => title,
         :instruction => instruction,
+        :guidelines => guidelines,
         :image_url => image_url,
         :answer_options => answer_options,
         :responses_required => responses_required,
