@@ -1,11 +1,11 @@
 module SharedWorkforce
   class Configuration
     
-    attr_accessor :api_key
-    attr_accessor :http_end_point
-    attr_accessor :callback_host
-    attr_accessor :request_class
+    attr_writer :callback_host
     attr_writer :callback_path
+    attr_writer :api_key
+    attr_accessor :http_end_point
+    attr_accessor :request_class
     
     def initialize
       @http_end_point = "http://api.sharedworkforce.com"
@@ -18,6 +18,14 @@ module SharedWorkforce
     
     def callback_path
       @callback_path ||= "hci_task_result"
+    end
+
+    def api_key
+      @api_key ||= ENV['SHAREDWORKFORCE_API_KEY']
+    end
+
+    def callback_host
+      @callback_host ||= ENV['SHAREDWORKFORCE_CALLBACK_HOST']
     end
 
     private
