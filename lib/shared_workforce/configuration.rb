@@ -17,7 +17,7 @@ module SharedWorkforce
     end
     
     def callback_path
-      @callback_path ||= "hci_task_result"
+      @callback_path ||= "shared_workforce/task_response"
     end
 
     def api_key

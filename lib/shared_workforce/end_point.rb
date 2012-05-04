@@ -6,7 +6,7 @@ module SharedWorkforce
     end
 
     def call(env)
-      if env["PATH_INFO"] =~ /^\/#{callback_path}/
+      if env["PATH_INFO"] =~ %r{^/#{callback_path}} || env["PATH_INFO"] =~ %r{^/hci_task_result} #legacy compatibility, can be removed in next release
         Rack::Request.new(env)
         process_response(req.body.read)
       else

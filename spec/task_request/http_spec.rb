@@ -18,7 +18,7 @@ describe "TaskRequest::Http" do
           'answer_options'=> ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways', 'Contains more than one person in the foreground', 'Has people in the background', 'Contains children'],
           'responses_required'=>3,
           'answer_type'=>'tags',
-          'callback_url'=>"#{SharedWorkforce.configuration.callback_host}/hci_task_result",
+          'callback_url'=>"#{SharedWorkforce.configuration.callback_host}/shared_workforce/task_response",
           'callback_params'=>{'resource_id'=>'1234'},
           'replace'=>true
         }, :api_key=>'test-api-key'}).should have_been_made.once
@@ -51,7 +51,7 @@ describe "TaskRequest::Http" do
           'answer_options'=> ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways', 'Contains more than one person in the foreground', 'Has people in the background', 'Contains children'],
           'responses_required'=>3,
           'answer_type'=>'tags',
-          'callback_url'=>"#{SharedWorkforce.configuration.callback_host}/hci_task_result",
+          'callback_url'=>"#{SharedWorkforce.configuration.callback_host}/shared_workforce/task_response",
           'callback_params'=>{'resource_id'=>'1234'},
           'replace'=>false,
         }, :api_key=>'test-api-key'}).should have_been_made.once
@@ -73,7 +73,7 @@ describe "TaskRequest::Http" do
           'answer_options'=> ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways', 'Contains more than one person in the foreground', 'Has people in the background', 'Contains children'],
           'responses_required'=>3,
           'answer_type'=>'tags',
-          'callback_url'=>"#{SharedWorkforce.configuration.callback_host}/hci_task_result",
+          'callback_url'=>"#{SharedWorkforce.configuration.callback_host}/shared_workforce/task_response",
           'callback_params'=>{'resource_id'=>'1234'},
           'replace'=>true
         }, :api_key=>'test-api-key'}).should have_been_made.once
