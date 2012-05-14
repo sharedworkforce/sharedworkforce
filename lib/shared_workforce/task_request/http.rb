@@ -4,7 +4,6 @@ module SharedWorkforce
     
     def initialize(*args)
       raise ConfigurationError, "Please set your SharedWorkforce api key with SharedWorkforce::Client.api_key = 'your-api-key-here'" unless SharedWorkforce.configuration.api_key
-      raise ConfigurationError, "Please set your callback URL with SharedWorkforce::Client.callback_host = 'www.your-domain-name.com'" unless SharedWorkforce.configuration.callback_host
       super(*args)
     end
     

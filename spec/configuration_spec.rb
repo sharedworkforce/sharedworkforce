@@ -37,5 +37,14 @@ describe "Configuration" do
 			ENV['SHAREDWORKFORCE_CALLBACK_HOST'] = old_env
 		end
 	end
+	
+	describe "#callback_url" do
+		it "should be nil if callback_host is nil" do
+			configuration.callback_host = nil
+			configuration.callback_path = "something"
+			configuration.callback_url.should be_nil
+		end
+	  
+	end
  
 end
