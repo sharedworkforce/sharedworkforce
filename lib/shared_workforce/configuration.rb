@@ -13,7 +13,7 @@ module SharedWorkforce
     end
     
     def callback_url
-      callback_host.to_s + '/' + callback_path.to_s
+      callback_host.to_s + '/' + callback_path.to_s if callback_host
     end
     
     def callback_path

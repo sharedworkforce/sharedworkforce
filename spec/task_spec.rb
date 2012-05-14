@@ -259,9 +259,10 @@ describe "Task" do
       task = Class.new { include SharedWorkforce::Task }
       with_configuration do |config|
         config.callback_host = nil
+        config.api_key = "123456"
         lambda {
           task.new.cancel(:request_id=>'123')
-        }.should raise_error SharedWorkforce::ConfigurationError
+        }.should_not raise_error SharedWorkforce::ConfigurationError
       end
     end
     
