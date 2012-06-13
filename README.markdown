@@ -3,18 +3,21 @@ Shared Workforce Client
 
 [![Build Status](https://secure.travis-ci.org/sharedworkforce/sharedworkforce.png)](http://travis-ci.org/#!/sharedworkforce/sharedworkforce)
 
-Shared Workforce is a platform for managing and completing repetitive tasks that require human intelligence. For example, tagging photos, approving text and answering simple questions.
+Shared Workforce is a platform for managing and completing repetitive tasks that require human intelligence. For example, tagging and cropping photos, approving text and answering simple questions.
 
-It differs from other similar services in the following ways:
+The Shared Workforce client lets you add behaviour to your models so that when an action occurs (for example, a photo is added), details of that action and model are sent to human workers, who can asses the data and return a response, which can be used to trigger further actions in the model (for example, marking it as spam).
 
-* All tasks should be very simple and typically take no more than 10-15 seconds. (larger tasks can be broken down in to smaller ones). 
-* Tasks are displayed from a selection of pre-defined formats.
-* Very simple integration via this ruby gem or the straight forward REST API.
+You can view a live demo sandbox app at [http://catsify.herokuapp.com](http://catsify.herokuapp.com)
 
-The service is currently in private beta. You can apply for an invitation at [sharedworkforce.com](http://www.sharedworkforce.com).
+The service is currently in private beta and is available as a [Heroku add-on](https://addons.heroku.com/sharedworkforce). You can apply for an invitation at [sharedworkforce.com](http://www.sharedworkforce.com).
 
-Getting started
-===============
+Getting started with Heroku
+===========================
+
+Getting started with [Heroku][http://www.heroku.com] takes less than 5 minutes. The best way to get started is to follow the README on the [demo app source code](https://github.com/sharedworkforce/sharedworkforce-demo-rails).
+
+Getting started without Heroku
+==============================
 
 ### Step 1 - get an API key
 
@@ -28,10 +31,6 @@ Add shared_workforce to your Gemfile:
 
     gem "shared_workforce"
 
-Or, for Rails 2.x add the gem to your environment.rb
-
-    config.gem "shared_workforce"
-
 Create config/initializers/shared_workforce.rb
 
     SharedWorkforce.configure do |config|
@@ -43,9 +42,7 @@ If you're not using Rails, simply require the gem or include it in your Gemfile,
 
 ### Step 3 - define tasks
 
-Create a directory called 'tasks' in the root of your app. This is where you define your tasks - all files in this directory will be loaded.
-
-If, for example, you would like to approve a photo on upload, create your first task in a file called tasks/approve_photo.rb   
+If, for example, you would like to approve a photo on upload, create your first task in a file called app/tasks/approve_photo.rb   
     
     class ApprovePhotoTask
       include SharedWorkforce::Task
