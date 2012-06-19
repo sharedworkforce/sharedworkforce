@@ -335,6 +335,12 @@ describe "Task" do
       task.guidelines = "* be careful"
       task.to_hash[:guidelines].should == '* be careful'
     end
+
+    it "should include the image crop ratio" do
+      task = ApprovePhotoTask.new(@resource_class.new)
+      task.image_crop_ratio = 0.5
+      task.to_hash[:image_crop_ratio].should == 0.5
+    end
   end
 end
 

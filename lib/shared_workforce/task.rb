@@ -126,6 +126,7 @@ module SharedWorkforce
         :instruction => instruction,
         :guidelines => guidelines,
         :image_url => image_url,
+        :image_crop_ratio => image_crop_ratio,
         :answer_options => answer_options,
         :responses_required => responses_required,
         :answer_type => answer_type.to_s,
