@@ -2,19 +2,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe "TaskRequest::HttpWithPoller" do
   describe "#create" do
-    it "should start a poller" do
-    	task = ApprovePhotoTask.new
-      task_request = SharedWorkforce::TaskRequest::HttpWithPoller.new(task,
-      	:image_url=>"http://www.google.com/logo.png",
-      	:image_crop_ratio=>1.7,
-      	:callback_params=>{:resource_id=>'1234'}
-      )
-
-      stub_request(:post, "api.sharedworkforce.com/tasks").to_return(:body=>{:id=>123}.to_json)
-      SharedWorkforce::ResponsePoller.should_receive(:start).with(123)
-      task_request.create
-    end
-
     it "should disable callbacks" do
     	task = ApprovePhotoTask.new
       task_request = SharedWorkforce::TaskRequest::HttpWithPoller.new(task,
@@ -25,7 +12,6 @@ describe "TaskRequest::HttpWithPoller" do
 
 			stub_request(:post, "api.sharedworkforce.com/tasks").to_return(:body=>{:id=>123}.to_json)
 
-			SharedWorkforce::ResponsePoller.should_receive(:start).with(123) 
 			task_request.create
 
 			a_request(:post, "http://api.sharedworkforce.com/tasks").with(:body=>{'task'=>
@@ -42,7 +28,6 @@ describe "TaskRequest::HttpWithPoller" do
           'replace'=>true,
           'callback_enabled'=>false,
         }, :api_key=>'test-api-key'}).should have_been_made.once
-
     end
   end
 end
