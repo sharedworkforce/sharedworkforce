@@ -255,7 +255,7 @@ describe "Task" do
       a_request(:post, "http://api.sharedworkforce.com/tasks/cancel").should have_been_made.once
     end
 
-    it "should raise a ConfigurationError if a callback host is not set" do
+    it "should not raise a ConfigurationError if a callback host is not set" do
       task = Class.new { include SharedWorkforce::Task }
       with_configuration do |config|
         config.callback_host = nil
@@ -340,6 +340,24 @@ describe "Task" do
       task = ApprovePhotoTask.new(@resource_class.new)
       task.image_crop_ratio = 0.5
       task.to_hash[:image_crop_ratio].should == 0.5
+    end
+
+    it "should include the callback url" do
+      with_configuration do |config|
+        config.callback_host = 'http://callback.example.com'
+        task = ApprovePhotoTask.new(@resource_class.new)
+        task.image_crop_ratio = 0.5
+        task.to_hash[:callback_url].should =~ %r{^http://callback.example.com/}
+      end
+    end
+
+    it "should set a nil callback url" do
+      with_configuration do |config|
+        config.callback_host = 'http://callback.example.com'
+        task = ApprovePhotoTask.new(@resource_class.new)
+        task.image_crop_ratio = 0.5
+        task.to_hash[:callback_url].should =~ %r{^http://callback.example.com/}
+      end
     end
   end
 end
