@@ -4,7 +4,6 @@ module SharedWorkforce
 
     def create
       task = JSON.parse(RestClient.post("#{http_end_point}/tasks", *request_params))
-      ResponsePoller.start(task['id'])
     end
   
     def cancel
