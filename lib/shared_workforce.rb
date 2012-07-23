@@ -29,7 +29,7 @@ module SharedWorkforce
     end
 
     def logger
-      @configuration.logger
+      configuration.logger
     end
   end
 
