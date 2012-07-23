@@ -1,6 +1,6 @@
 module SharedWorkforce
   module Task
-
+    
     def self.included(base)
       base.extend(ClassMethods)
       base.default_attributes(

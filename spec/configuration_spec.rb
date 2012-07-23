@@ -46,5 +46,28 @@ describe "Configuration" do
 		end
 	  
 	end
+
+	describe "#logger" do
+		it "should default to rails logger" do
+			logger_double = double(:logger)
+			configuration.stub(:rails_logger).and_return(logger_double)
+			configuration.logger.should == logger_double
+		end
+
+		it "should fallback to a default logger" do
+			logger_double = double(:logger)
+			configuration.stub(:rails_logger).and_return(nil)
+			configuration.stub(:default_logger).and_return(logger_double)
+			configuration.logger.should == logger_double
+		end
+
+		it "should be overridden by a custom logger" do
+			logger_double = double(:logger)
+			configuration.stub(:rails_logger).and_return(double(:rails_logger))
+			configuration.logger = logger_double
+			
+			configuration.logger.should == logger_double
+		end
+	end
  
 end

@@ -16,9 +16,8 @@ require 'active_support/inflector'
 require 'active_support/core_ext/hash/indifferent_access'
 
 module SharedWorkforce
-  
-  class << self
     
+  class << self
     attr_writer :configuration
     
     def configure
@@ -28,6 +27,10 @@ module SharedWorkforce
     def configuration
       @configuration ||= SharedWorkforce::Configuration.new
     end
+
+    def logger
+      @configuration.logger
+    end
   end
-  
+
 end

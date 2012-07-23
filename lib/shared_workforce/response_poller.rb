@@ -1,21 +1,20 @@
 module SharedWorkforce
   class ResponsePoller
+    # The response poller is intended for use during local development only. It 
+    # facilitates real world task responses without needing an open socket for the 
+    # web hooks.
 
     def self.start(interval=60)
       new.start(interval)
     end
 
-    def initialize
-      $stdout.sync = true
-    end
-
     def start(interval)
       Thread.abort_on_exception = true
       Thread.new do
-        puts "SharedWorkforce: Checking every #{interval} seconds for new responses."
+        SharedWorkforce.logger.info "SharedWorkforce: Checking every #{interval} seconds for new responses."
         
         while true
-          puts "SharedWorkforce: Checking for new task responses."
+          SharedWorkforce.logger.info "SharedWorkforce: Checking for new task responses."
           process_tasks completed_tasks
           sleep interval
         end
@@ -27,7 +26,7 @@ module SharedWorkforce
     def process_tasks(tasks)
       tasks.each do |task|
         if task['state'] == "completed"
-          puts "SharedWorkforce: Task complete. Getting responses."
+          SharedWorkforce.logger.info "SharedWorkforce: Task complete. Getting responses."
           responses = collect_responses(task['id'])
           SharedWorkforce::TaskResult.new(responses).process!
         end

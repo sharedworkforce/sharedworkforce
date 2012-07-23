@@ -15,8 +15,8 @@ module SharedWorkforce
 
     def process_response(body)
       body = JSON.parse(body)
-      puts "Processing Shared Workforce task callback"
-      puts body.inspect
+      SharedWorkforce.logger.info "Processing Shared Workforce task callback"
+      SharedWorkforce.logger.info { body.inspect }
       
       raise SecurityTransgression unless valid_api_key?(body['api_key'])
       

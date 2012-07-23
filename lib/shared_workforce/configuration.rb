@@ -4,6 +4,8 @@ module SharedWorkforce
     attr_writer :callback_host
     attr_writer :callback_path
     attr_writer :api_key
+    attr_writer :logger
+
     attr_accessor :http_end_point
     attr_accessor :request_class
     
@@ -28,6 +30,10 @@ module SharedWorkforce
       @callback_host ||= ENV['SHAREDWORKFORCE_CALLBACK_HOST']
     end
 
+    def logger
+      @logger ||= (rails_logger || default_logger)
+    end
+
     private
 
     def default_request_class
@@ -43,6 +49,17 @@ module SharedWorkforce
         TaskRequest::Http
       end
     end
-    
+
+    def rails_logger
+      (defined?(Rails) && Rails.respond_to?(:logger) && Rails.logger) ||
+      (defined?(RAILS_DEFAULT_LOGGER) && RAILS_DEFAULT_LOGGER.respond_to?(:debug) && RAILS_DEFAULT_LOGGER)
+    end
+
+    def default_logger
+      require 'logger'
+      l = ::Logger.new($stdout)
+      l.level = ::Logger::INFO
+      l
+    end
   end
 end
