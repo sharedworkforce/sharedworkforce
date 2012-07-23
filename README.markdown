@@ -11,13 +11,11 @@ You can view a live demo sandbox app at [http://catsify.herokuapp.com](http://ca
 
 The service is currently in private beta and is available as a [Heroku add-on](https://addons.heroku.com/sharedworkforce). You can apply for an invitation at [sharedworkforce.com](http://www.sharedworkforce.com).
 
-Getting started with Heroku
-===========================
 
-Getting started with [Heroku][http://www.heroku.com] takes less than 5 minutes. The best way to get started is to follow the README on the [demo app source code](https://github.com/sharedworkforce/sharedworkforce-demo-rails).
+Getting started
+===============
 
-Getting started without Heroku
-==============================
+_**Note to Heroku users:** Getting started with [Heroku](http://www.heroku.com]) takes less than 5 minutes. The best way to get started is to follow the README on the [demo app source code](https://github.com/sharedworkforce/sharedworkforce-demo-rails)._
 
 ### Step 1 - get an API key
 
