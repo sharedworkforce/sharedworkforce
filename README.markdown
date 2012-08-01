@@ -27,14 +27,18 @@ Register for a beta invitation at [sharedworkforce.com](http://www.sharedworkfor
   
 Add shared_workforce to your Gemfile:
 
-    gem "shared_workforce"
+```ruby
+gem "shared_workforce"
+```
 
 Create config/initializers/shared_workforce.rb
 
-    SharedWorkforce.configure do |config|
-      config.api_key = "your-api-key"
-      config.callback_host = "http://your-website-host"
-    end
+```ruby
+SharedWorkforce.configure do |config|
+  config.api_key = "your-api-key"
+  config.callback_host = "http://your-website-host"
+end
+```
 
 If you're not using Rails, simply require the gem or include it in your Gemfile, set the client configuration settings as above.
 
