@@ -14,6 +14,7 @@ require 'shared_workforce/response_poller'
 require 'shared_workforce/frameworks/rails' if defined?(Rails)
 require 'active_support/inflector'
 require 'active_support/core_ext/hash/indifferent_access'
+require 'active_support/core_ext/object/blank'
 
 module SharedWorkforce
     

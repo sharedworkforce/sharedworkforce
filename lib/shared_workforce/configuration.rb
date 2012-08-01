@@ -34,6 +34,10 @@ module SharedWorkforce
       @logger ||= (rails_logger || default_logger)
     end
 
+    def valid?
+      @api_key.present?
+    end
+
     private
 
     def default_request_class

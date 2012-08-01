@@ -69,5 +69,12 @@ describe "Configuration" do
 			configuration.logger.should == logger_double
 		end
 	end
+
+	describe "#valid" do
+		it "should be false if no api key is set" do
+			configuration.api_key = nil
+			configuration.should_not be_valid
+		end
+	end
  
 end
