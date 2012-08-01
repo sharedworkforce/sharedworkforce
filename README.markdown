@@ -40,108 +40,151 @@ If you're not using Rails, simply require the gem or include it in your Gemfile,
 
 ### Step 3 - define tasks
 
-If, for example, you would like to approve a photo on upload, create your first task in a file called app/tasks/approve_photo.rb   
-    
-    class ApprovePhotoTask
-      include SharedWorkforce::Task
+A class defines the content (for example, an image url) and instructions that the human worker will see when they work on your task, and the methods to be run once the task has been completed.
 
-      title 'Approve Photo'
+If, for example, you would like to approve a photo on upload, create a task class file in an `app/tasks` directory (or anywhere in the load path).
 
-      instruction 'Look at this photo. Please tick all that apply.'
-      responses_required 1
 
-      answer_options ['Offensive', 'Contains Nudity', 'Blurry or low quality', 'Upside down or sideways']
-      answer_type :tags
-      image_url "http://www.google.com/logo.png"
+`app/tasks/tag_photo_task.rb`:
 
-      on_success :moderate_photo
-
-      def moderate_photo(photo, responses)
-        if responses.map { |r| r[:answer] }.include?('Offensive')
-          photo.hide!
-          photo.add_comment("Photo is offensive")
-        end
-        puts "Photo Moderated"
-      end
-      
+```ruby
+class TagPhotoTask
+  include SharedWorkforce::Task
+  
+  title 'Please tag our photo'
+  
+  instruction 'Please look at the photo and tick all that apply.'
+  
+  answer_type :tags
+  answer_options ['Offensive', 'Contains Nudity', 'Blurry or low quality', 'Upside down or sideways']
+  
+  responses_required 1
+  
+  on_success :moderate_photo
+  
+  def setup(photo)
+    self.image_url = photo.url
+  end
+  
+  def moderate_photo(photo, responses)
+    # responses => [{:answer=>['Offensive', 'Contains Nudity']}]
+    if responses.map {|r| r[:answer]}.flatten.include?('Offensive')
+      photo.delete
+      photo.user.quarantine("Uploded offensive photo")
     end
-    
+  end
+end
+```
+_**Note:** the task definition includes a `setup` method which is called automatically whenever the task is initialized. In the example, the task's `image_url` (the image shown to the worker) is set from the photo model's url attribute. Any of the task's attributes can be set this way._
+
+Once you have created a task definition, you can request real human responses for a model instance by calling its `create` method. This can be done in an `after_create` callback in one of your Active Record models. This will be covered in more detail in the next section.
 
 ### Step 4 - request tasks
 
-Publishing tasks is simply a case of calling `TaskClass.create()`.  If you are using Rails, this could be done in an after save callback on a model:
+When you publish a task it will be queued for a human worker to complete. You can publish a task in an `after_create` callback on a typical Active Record model:
 
-    class Photo < ActiveRecord::Base
-    
-      after_create :approve_photo
-    
-      def approve_photo
-        ApprovePhotoTask.create(self)
-      end
-    end
+```ruby
+class Photo < ActiveRecord::Base
+  
+  after_create :request_tags
+  
+  def request_tags
+    TagPhotoTask.create(self)
+  end
+end
+```
 
+_**Note:** In the example, the photo model instance (self) is used an argument to the TagPhotoTask.create method. This argument will be available in the setup method and the callback method as shown in the example of a Task Definition in step 3._
+
+When the response(s) from the human workers are collected, the method specified in the `on_success` attribute in your task definition will be called. Typically this will take about 15 minutes. You can check the [Shared Workforce web site](http://www.sharedworkforce.com) for an up to date status on the current response time.
+
+### Unit testing
+
+You can test your task definition by calling its methods directly.
+
+```ruby
+it "should quarantine the user" do
+  photo = Factory(:photo)
+  task = ClassifyPhotoTask.new(photo)
+  task.moderate_photo(photo, [{:answer=>['Offensive']}])
+  photo.user.should be_quarantined
+end
+```
 
 Advanced definition options
 ----------------------------------------
 
 ### Task types
 
-SharedWorkforce currently supports 3 types of task. `:tags` (multiple select), `:choice` (single answer from a list of options), or `:edit` (edit text).
+SharedWorkforce currently supports 5 types of task. Possible options are:
 
-###Multiple responses
+  * `"choice"`: choose one option from a list
+  * `"tags"`: choose any number of options from a list
+  * `"edit"`: edit the text in the 'text' attribute
+  * `"crop"`: crop the photo (see image_crop_ratio)
+  * `"rotate"`: rotate the photo
+
+### Multiple responses
 
 SharedWorkforce supports multiple responses for each task. The callback method provides you with an array of responses from multiple workers. You can create your own logic to decide what to do. This is useful if you want to prevent destructive action unless a number of workers agree.
 
-    class ApprovePhotoTask
-      include SharedWorkforce::Task
+```ruby
+class ApprovePhotoTask
+  include SharedWorkforce::Task
 
-      title 'Approve Photo'
+  title 'Approve Photo'
 
-      instruction 'Look at this photo. Please tick all that apply.'
-      responses_required 3
+  instruction 'Look at this photo. Please tick all that apply.'
+  responses_required 3
 
-      answer_options ['Offensive', 'Contains Nudity', 'Blurry or low quality', 'Upside down or sideways']
-      answer_type :tags
+  answer_options ['Offensive', 'Contains Nudity', 'Blurry or low quality', 'Upside down or sideways']
+  answer_type :tags
 
-      on_complete :moderate_photo
+  on_complete :moderate_photo
 
-      def moderate_photo(photo, responses)
-        photo.hide! if responses.map { |r| r[:answer] }.all? { |a| a.include?('Contains Nudity') }
-      end
+  def moderate_photo(photo, responses)
+    photo.hide! if responses.map { |r| r[:answer] }.all? { |a| a.include?('Contains Nudity') }
+  end
 
-    end
-    
+end
+```
 
-###Replacing tasks
+### Replacing tasks
 
 The "replace" option allows you to overwrite or update any existing tasks with the same name and callback params. This could be useful in the example to handle the situation where a user re-uploads their photo - you may only care about the latest one.
 
-    class ApprovePhotoTask
-      include SharedWorkforce::Task
-      ...
-      replace true
-      ...  
-    end
+```ruby
+class ApprovePhotoTask
+  include SharedWorkforce::Task
+  ...
+  replace true
+  ...  
+end
+```
 
-###Cancelling tasks
+### Cancelling tasks
 
 You can cancel tasks when they are no longer relevant.
- 
-    class Photo
-      after_destroy :cancel_tagging_request
 
-      def cancel_tagging_request
-        ApprovePhotoTask.cancel(self)
-      end
-    end
+```ruby 
+class Photo
+  after_destroy :cancel_tagging_request
 
-###Testing and development
+  def cancel_tagging_request
+    ApprovePhotoTask.cancel(self)
+  end
+end
+```
 
-You can black-hole requests to SharedWorkforce for testing and development by adding the following configuration option in your initializer:
+### Disabling requests during development
 
-    SharedWorkforce.configure do |config|
-      config.request_class = SharedWorkforce::TaskRequest::BlackHole
-    end
+You can black-hole requests to Shared Workforce for testing and development by adding the following configuration option in your initializer:
+
+```ruby
+SharedWorkforce.configure do |config|
+  config.request_class = SharedWorkforce::TaskRequest::BlackHole
+end
+```
 
 License
 -----------
