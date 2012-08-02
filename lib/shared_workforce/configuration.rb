@@ -41,14 +41,8 @@ module SharedWorkforce
     private
 
     def default_request_class
-      if defined?(Rails)
-        if Rails.env.development?
-          TaskRequest::HttpWithPoller
-        elsif Rails.env.test?
-          TaskRequest::BlackHole
-        else
-          TaskRequest::Http
-        end
+      if defined?(Rails) && Rails.env.test?
+        TaskRequest::BlackHole
       else
         TaskRequest::Http
       end

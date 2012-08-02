@@ -3,7 +3,7 @@ module SharedWorkforce
   class TaskRequest::Http < TaskRequest
     
     def initialize(*args)
-      raise ConfigurationError, "Please set your SharedWorkforce api key with SharedWorkforce::Client.api_key = 'your-api-key-here'" unless SharedWorkforce.configuration.api_key
+      raise ConfigurationError, "Please set your SharedWorkforce api key with SharedWorkforce::Client.api_key = 'your-api-key-here'" unless SharedWorkforce.configuration.valid?
       super(*args)
     end
     
