@@ -10,11 +10,11 @@ describe "TaskRequest::HttpWithPoller" do
       	:callback_params=>{:resource_id=>'1234'}
       )
 
-			stub_request(:post, "api.sharedworkforce.com/tasks").to_return(:body=>{:id=>123}.to_json)
+			stub_request(:post, "https://api.sharedworkforce.com/tasks").to_return(:body=>{:id=>123}.to_json)
 
 			task_request.create
 
-			a_request(:post, "http://api.sharedworkforce.com/tasks").with(:body=>{'task'=>
+			a_request(:post, "https://api.sharedworkforce.com/tasks").with(:body=>{'task'=>
         {
           'title'=>"Approve Photo",
           'instruction'=>"Please classify this photo by choosing the appropriate tickboxes.",
