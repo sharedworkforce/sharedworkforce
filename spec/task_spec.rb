@@ -240,9 +240,9 @@ describe "Task" do
     it "should make a new task http request" do
       task = Class.new { include SharedWorkforce::Task }
 
-      stub_request(:post, "http://api.sharedworkforce.com/tasks")
+      stub_request(:post, "https://api.sharedworkforce.com/tasks")
       task.new.request(:request_id=>'123')
-      a_request(:post, "http://api.sharedworkforce.com/tasks").should have_been_made.once
+      a_request(:post, "https://api.sharedworkforce.com/tasks").should have_been_made.once
     end
   end
   
@@ -250,9 +250,9 @@ describe "Task" do
     it "should send a cancel task http request" do
       task_class = Class.new { include SharedWorkforce::Task }
 
-      stub_request(:post, "http://api.sharedworkforce.com/tasks/cancel")
+      stub_request(:post, "https://api.sharedworkforce.com/tasks/cancel")
       task_class.cancel(@resource_class.new)
-      a_request(:post, "http://api.sharedworkforce.com/tasks/cancel").should have_been_made.once
+      a_request(:post, "https://api.sharedworkforce.com/tasks/cancel").should have_been_made.once
     end
 
     it "should not raise a ConfigurationError if a callback host is not set" do

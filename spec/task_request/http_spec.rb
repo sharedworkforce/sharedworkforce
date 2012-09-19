@@ -7,9 +7,9 @@ describe "TaskRequest::Http" do
       task = ApprovePhotoTask.new
       task_request = SharedWorkforce::TaskRequest::Http.new(task, :image_url=>"http://www.google.com/logo.png", :image_crop_ratio=>1.7, :callback_params=>{:resource_id=>'1234'})
     
-      stub_request(:post, "api.sharedworkforce.com/tasks")
+      stub_request(:post, "https://api.sharedworkforce.com/tasks")
       task_request.create
-      a_request(:post, "http://api.sharedworkforce.com/tasks").with(:body=>{'task'=>
+      a_request(:post, "https://api.sharedworkforce.com/tasks").with(:body=>{'task'=>
         {
           'title'=>"Approve Photo",
           'instruction'=>"Please classify this photo by choosing the appropriate tickboxes.",
@@ -41,9 +41,9 @@ describe "TaskRequest::Http" do
 
       task_request = SharedWorkforce::TaskRequest::Http.new(task.new, {:callback_params=>{:resource_id=>'1234'}, :image_url=>"http://www.example.com/image.jpg"})
 
-      stub_request(:post, "api.sharedworkforce.com/tasks")
+      stub_request(:post, "https://api.sharedworkforce.com/tasks")
       task_request.create
-      a_request(:post, "http://api.sharedworkforce.com/tasks").with(:body=>{'task'=>
+      a_request(:post, "https://api.sharedworkforce.com/tasks").with(:body=>{'task'=>
         {
           'title'=>"Approve Photo",
           'instruction'=>"Please classify this photo by choosing the appropriate tickboxes.",
@@ -63,9 +63,9 @@ describe "TaskRequest::Http" do
     
       task_request = SharedWorkforce::TaskRequest::Http.new(ApprovePhotoTask.new, :callback_params=>{:resource_id=>'1234'})
     
-      stub_request(:post, "api.sharedworkforce.com/tasks/cancel")
+      stub_request(:post, "https://api.sharedworkforce.com/tasks/cancel")
       task_request.cancel
-      a_request(:post, "http://api.sharedworkforce.com/tasks/cancel").with(:body=>{'task'=>
+      a_request(:post, "https://api.sharedworkforce.com/tasks/cancel").with(:body=>{'task'=>
         {
           'title'=>"Approve Photo",
           'instruction'=>"Please classify this photo by choosing the appropriate tickboxes.",

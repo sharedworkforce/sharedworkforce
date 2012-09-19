@@ -10,7 +10,7 @@ module SharedWorkforce
     attr_accessor :request_class
     
     def initialize
-      @http_end_point = "http://api.sharedworkforce.com"
+      @http_end_point = "https://api.sharedworkforce.com"
       @request_class = default_request_class
     end
     
@@ -35,7 +35,7 @@ module SharedWorkforce
     end
 
     def valid?
-      @api_key.present?
+      api_key.present?
     end
 
     private
