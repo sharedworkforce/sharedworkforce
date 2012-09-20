@@ -20,7 +20,8 @@ describe "TaskRequest::Http" do
           'answer_type'=>'tags',
           'callback_url'=>"#{SharedWorkforce.configuration.callback_host}/shared_workforce/task_response",
           'callback_params'=>{'resource_id'=>'1234'},
-          'replace'=>true
+          'replace'=>true,
+          'html'=>'<strong>Custom html</strong>'
         }, :api_key=>'test-api-key'}).should have_been_made.once
     
     end
@@ -53,7 +54,7 @@ describe "TaskRequest::Http" do
           'answer_type'=>'tags',
           'callback_url'=>"#{SharedWorkforce.configuration.callback_host}/shared_workforce/task_response",
           'callback_params'=>{'resource_id'=>'1234'},
-          'replace'=>false,
+          'replace'=>false
         }, :api_key=>'test-api-key'}).should have_been_made.once
      end
   end
@@ -75,7 +76,8 @@ describe "TaskRequest::Http" do
           'answer_type'=>'tags',
           'callback_url'=>"#{SharedWorkforce.configuration.callback_host}/shared_workforce/task_response",
           'callback_params'=>{'resource_id'=>'1234'},
-          'replace'=>true
+          'replace'=>true,
+          'html'=>'<strong>Custom html</strong>'
         }, :api_key=>'test-api-key'}).should have_been_made.once
     
     end

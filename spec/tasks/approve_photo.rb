@@ -9,6 +9,7 @@ class ApprovePhotoTask
   answer_options ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways', 'Contains more than one person in the foreground', 'Has people in the background', 'Contains children']
   answer_type :tags
   image_url "http://www.google.com/logo.png"
+  html '<strong>Custom html</strong>'
 
   replace true
   

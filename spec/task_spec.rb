@@ -18,6 +18,7 @@ describe "Task" do
       answer_type :crop
       image_crop_ratio 1.7
       guidelines "* be careful"
+      html "<strong>Custom html</strong>"
 
       answer_options ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways']
 
@@ -41,6 +42,7 @@ describe "Task" do
     task.image_crop_ratio.should == 1.7
     task.answer_options.should == ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways']
     task.guidelines.should == "* be careful"
+    task.html.should == "<strong>Custom html</strong>"
   end
 
   it "should allow certain default attributes to be overwritten" do

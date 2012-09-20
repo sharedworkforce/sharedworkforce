@@ -27,6 +27,7 @@ describe "TaskRequest::HttpWithPoller" do
           'callback_params'=>{'resource_id'=>'1234'},
           'replace'=>true,
           'callback_enabled'=>false,
+          'html'=>'<strong>Custom html</strong>'
         }, :api_key=>'test-api-key'}).should have_been_made.once
     end
   end

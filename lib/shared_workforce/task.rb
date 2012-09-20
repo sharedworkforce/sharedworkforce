@@ -14,6 +14,7 @@ module SharedWorkforce
         :image_url,
         :image_crop_ratio,
         :text,
+        :html,
         :on_success,
         :on_failure,
         :on_complete
@@ -133,6 +134,7 @@ module SharedWorkforce
         :callback_url => callback_url,
         :replace => replace,
         :text => text,
+        :html => html,
         :callback_params => attributes
       }.reject {|k,v| v.nil? }
     end
