@@ -81,6 +81,14 @@ end
 ```
 _**Note:** the task definition includes a `setup` method which is called automatically whenever the task is initialized. In the example, the task's `image_url` (the image shown to the worker) is set from the photo model's url attribute. Any of the task's attributes can be set this way._
 
+Class level attributes are a handy way of defining data that doesn't change between each task.
+Attributes set on the instance will always override attributes set at the class level.
+
+In most cases, you'll want to explicitly set default task values at the class level
+(like `title` and `instruction`). Setting `text`
+and `image_url` values (i.e. the content in question) will usually be done in
+the `setup` method.</p>
+
 Once you have created a task definition, you can request real human responses for a model instance by calling its `create` method. This can be done in an `after_create` callback in one of your Active Record models. This will be covered in more detail in the next section.
 
 ### Step 4 - request tasks
