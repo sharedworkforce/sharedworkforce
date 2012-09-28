@@ -90,6 +90,7 @@ module SharedWorkforce
     end
 
     def process_result(result)
+      SharedWorkforce.logger.info("Shared Workforce: processing responses for #{title}")
       initialize_attributes(result.callback_params)
       success!(result)
       complete!(result)
@@ -112,6 +113,7 @@ module SharedWorkforce
     end
 
     def request(options = {})
+      SharedWorkforce.logger.info("Shared Workforce: creating task #{title}")
       task_request = remote_request(self, options)
       task_request.create
     end
