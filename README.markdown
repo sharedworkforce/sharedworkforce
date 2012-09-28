@@ -110,6 +110,16 @@ _**Note:** In the example, the photo model instance (self) is used an argument t
 
 When the response(s) from the human workers are collected, the method specified in the `on_success` attribute in your task definition will be called. Typically this will take about 15 minutes. You can check the [Shared Workforce web site](http://www.sharedworkforce.com) for an up to date status on the current response time.
 
+### Step 5 - collect responses
+
+A rake task is provided for collecting the responses *during development*.
+
+```
+$ rake sw:collect
+```
+
+There is no requirement to run the rake task in production. The webhook will be used to deliver the task responses.
+
 ### Unit testing
 
 You can test your task definition by calling its methods directly.

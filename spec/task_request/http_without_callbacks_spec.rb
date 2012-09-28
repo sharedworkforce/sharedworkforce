@@ -1,10 +1,10 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
-describe "TaskRequest::HttpWithPoller" do
+describe "TaskRequest::HttpWithoutCallbacks" do
   describe "#create" do
     it "should disable callbacks" do
     	task = ApprovePhotoTask.new
-      task_request = SharedWorkforce::TaskRequest::HttpWithPoller.new(task,
+      task_request = SharedWorkforce::TaskRequest::HttpWithoutCallbacks.new(task,
       	:image_url=>"http://www.google.com/logo.png",
       	:image_crop_ratio=>1.7,
       	:callback_params=>{:resource_id=>'1234'}

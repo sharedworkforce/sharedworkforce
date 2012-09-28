@@ -7,12 +7,15 @@ if defined?(ActionController::Metal)
         	if SharedWorkforce.configuration.valid?
             # Stop log buffering when using Foreman in development
             $stdout.sync = true
-            SharedWorkforce::ResponsePoller.start
           else
             puts 'Shared Workforce: API key not configured.'
           end
         end
       end
+    end
+
+    rake_tasks do
+      load "shared_workforce/tasks/collect.rake" if Rails.env.development?
     end
   end
 end

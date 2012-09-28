@@ -43,7 +43,7 @@ module SharedWorkforce
     def default_request_class
       if defined?(Rails)
         if Rails.env.development?
-          TaskRequest::HttpWithPoller
+          TaskRequest::HttpWithoutCallbacks
         elsif Rails.env.test?
           TaskRequest::BlackHole
         else
