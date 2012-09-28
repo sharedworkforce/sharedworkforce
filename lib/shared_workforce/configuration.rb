@@ -31,7 +31,7 @@ module SharedWorkforce
     end
 
     def logger
-      @logger ||= (rails_logger || default_logger)
+      @logger ||= default_logger
     end
 
     def valid?
@@ -60,10 +60,14 @@ module SharedWorkforce
     end
 
     def default_logger
-      require 'logger'
-      l = ::Logger.new($stdout)
-      l.level = ::Logger::INFO
-      l
+      if !rails_logger || (defined?(Rails) && Rails.env.development?)
+        require 'logger'
+        l = ::Logger.new($stdout)
+        l.level = ::Logger::INFO
+        l
+      else
+        rails_logger
+      end
     end
   end
 end
