@@ -7,7 +7,9 @@ module SharedWorkforce
 
     def call(env)
       if env["PATH_INFO"] =~ %r{^/#{callback_path}}
-        process_response(Rack::Request.new(env).body.rewind.read)
+        request = Rack::Request.new(env)
+        request.body.rewind
+        process_response(request.body.read)
       else
         @app.call(env) if @app.respond_to? :call
       end
