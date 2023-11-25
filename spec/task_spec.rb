@@ -54,6 +54,7 @@ describe "Task" do
       responses_required 3
       image_url "http://www.google.com/logo.png"
       replace false
+      callback_url "https://example.com/custom_callback"
 
       answer_options ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways']
 
@@ -85,6 +86,7 @@ describe "Task" do
     task.instruction.should == nil
     task.replace.should == true
     task.text.should == "A photo"
+    task.callback_url.should == "https://example.com/custom_callback"
   end
 
   describe ".new" do
@@ -206,7 +208,9 @@ describe "Task" do
 
     it "should call setup after initialization" do
       @task_class.any_instance.should_receive(:setup).once
-      @task_class.new
+      @task_class.new(
+        OpenStruct.new(:id => 1, :class => OpenStruct.new(:find => nil))
+      )
     end
 
     it "should pass the resource as an argument to setup" do
@@ -349,7 +353,7 @@ describe "Task" do
         config.callback_host = 'http://callback.example.com'
         task = ApprovePhotoTask.new(@resource_class.new)
         task.image_crop_ratio = 0.5
-        task.to_hash[:callback_url].should =~ %r{^http://callback.example.com/}
+        task.to_hash[:callback_url].should =~ %r{^https://example.com/callback/custom/333}
       end
     end
 
@@ -358,7 +362,7 @@ describe "Task" do
         config.callback_host = 'http://callback.example.com'
         task = ApprovePhotoTask.new(@resource_class.new)
         task.image_crop_ratio = 0.5
-        task.to_hash[:callback_url].should =~ %r{^http://callback.example.com/}
+        task.to_hash[:callback_url].should =~ %r{^https://example.com/callback/custom/333}
       end
     end
   end

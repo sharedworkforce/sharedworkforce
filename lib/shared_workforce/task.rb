@@ -17,7 +17,8 @@ module SharedWorkforce
         :html,
         :on_success,
         :on_failure,
-        :on_complete
+        :on_complete,
+        :callback_url
       )
     end
 
@@ -84,9 +85,8 @@ module SharedWorkforce
         end 
         @resource = resource_or_result
         initialize_attributes(attributes)
+        setup(@resource) if respond_to?(:setup)
       end
-      
-      setup(resource) if respond_to?(:setup)
     end
 
     def process_result(result)
@@ -133,7 +133,8 @@ module SharedWorkforce
         :answer_options => answer_options,
         :responses_required => responses_required,
         :answer_type => answer_type.to_s,
-        :callback_url => callback_url,
+        :callback_url =>
+          callback_url || SharedWorkforce.configuration.callback_url,
         :replace => replace,
         :text => text,
         :html => html,
@@ -147,10 +148,6 @@ module SharedWorkforce
       if @result && @result.callback_params[:_task] && resource_params = @result.callback_params[:_task][:resource]
         resource_params[:class_name].constantize.find(resource_params[:id])
       end
-    end
-    
-    def callback_url
-      SharedWorkforce.configuration.callback_url
     end
     
     def remote_request(*args)
@@ -167,6 +164,5 @@ module SharedWorkforce
       @attributes[:_task] = {:class_name => self.class.name}
       @attributes[:_task][:resource] = {:class_name => @resource.class.name, :id => @resource.id} if @resource
     end
-
   end
 end

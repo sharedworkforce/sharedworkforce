@@ -16,6 +16,10 @@ class ApprovePhotoTask
   on_complete :puts_complete
   on_failure :puts_failure
 
+  def setup(photo)
+    self.callback_url = "https://example.com/callback/custom/#{photo.id}"
+  end
+
   def puts_complete(resource, results)
     puts "Complete"
   end
