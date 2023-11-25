@@ -16,6 +16,10 @@ class ApprovePhotoTask
   on_complete :puts_complete
   on_failure :puts_failure
 
+  def setup(photo)
+    self.callback_host = "callbackhost.example.com"
+  end
+
   def puts_complete(resource, results)
     puts "Complete"
   end

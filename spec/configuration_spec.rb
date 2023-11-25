@@ -34,15 +34,6 @@ describe "Configuration" do
 		end
 	end
 	
-	describe "#callback_url" do
-		it "should be nil if callback_host is nil" do
-			configuration.callback_host = nil
-			configuration.callback_path = "something"
-			configuration.callback_url.should be_nil
-		end
-	  
-	end
-
 	describe "#logger" do
 		it "should default to rails logger" do
 			logger_double = double(:logger)

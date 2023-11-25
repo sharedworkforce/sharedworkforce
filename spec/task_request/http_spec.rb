@@ -3,9 +3,14 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe "TaskRequest::Http" do
   describe "#create" do
     it "should invoke a task request" do
-      
+
       task = ApprovePhotoTask.new
-      task_request = SharedWorkforce::TaskRequest::Http.new(task, :image_url=>"http://www.google.com/logo.png", :image_crop_ratio=>1.7, :callback_params=>{:resource_id=>'1234'})
+      task_request = SharedWorkforce::TaskRequest::Http.new(
+        task, :image_url=>"http://www.google.com/logo.png",
+        :image_crop_ratio=>1.7,
+        :callback_url=>"https://example.com/test/callback",
+        :callback_params=>{:resource_id=>'1234'}
+      )
     
       stub_request(:post, "https://api.sharedworkforce.com/tasks")
       task_request.create
@@ -18,7 +23,7 @@ describe "TaskRequest::Http" do
           'answer_options'=> ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways', 'Contains more than one person in the foreground', 'Has people in the background', 'Contains children'],
           'responses_required'=>3,
           'answer_type'=>'tags',
-          'callback_url'=>"#{SharedWorkforce.configuration.callback_host}/shared_workforce/task_response",
+          'callback_url'=>"https://example.com/test/callback",
           'callback_params'=>{'resource_id'=>'1234'},
           'replace'=>true,
           'html'=>'<strong>Custom html</strong>'
@@ -52,7 +57,7 @@ describe "TaskRequest::Http" do
           'answer_options'=> ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways', 'Contains more than one person in the foreground', 'Has people in the background', 'Contains children'],
           'responses_required'=>3,
           'answer_type'=>'tags',
-          'callback_url'=>"#{SharedWorkforce.configuration.callback_host}/shared_workforce/task_response",
+          'callback_url'=>nil,
           'callback_params'=>{'resource_id'=>'1234'},
           'replace'=>false
         }, :api_key=>'test-api-key'}).should have_been_made.once
@@ -61,7 +66,7 @@ describe "TaskRequest::Http" do
   
   describe "#cancel" do
     it "should invoke a task cancellation" do
-    
+
       task_request = SharedWorkforce::TaskRequest::Http.new(ApprovePhotoTask.new, :callback_params=>{:resource_id=>'1234'})
     
       stub_request(:post, "https://api.sharedworkforce.com/tasks/cancel")
@@ -74,7 +79,7 @@ describe "TaskRequest::Http" do
           'answer_options'=> ['Obscenity', 'Nudity', 'Blurry', 'Upside down or sideways', 'Contains more than one person in the foreground', 'Has people in the background', 'Contains children'],
           'responses_required'=>3,
           'answer_type'=>'tags',
-          'callback_url'=>"#{SharedWorkforce.configuration.callback_host}/shared_workforce/task_response",
+          'callback_url'=>nil,
           'callback_params'=>{'resource_id'=>'1234'},
           'replace'=>true,
           'html'=>'<strong>Custom html</strong>'

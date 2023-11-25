@@ -10,15 +10,15 @@ module SharedWorkforce
     private
     
     def request_params
-      [{:task=>@task.to_hash.merge(@params).merge(:callback_url=>callback_url), :api_key=>api_key}.to_json, {:content_type => :json, :accept => :json}]
+      [{:task=>@task.to_hash.merge(:callback_url=>callback_url).merge(@params).except(:callback_host), :api_key=>api_key}.to_json, {:content_type => :json, :accept => :json}]
     end
     
     def http_end_point
       SharedWorkforce.configuration.http_end_point
     end
-    
+
     def callback_url
-      SharedWorkforce.configuration.callback_url
+      @task.callback_host.to_s + '/' + SharedWorkforce.configuration.callback_path.to_s if @task.callback_host
     end
     
     def api_key

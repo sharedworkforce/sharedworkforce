@@ -14,10 +14,6 @@ module SharedWorkforce
       @request_class = default_request_class
     end
     
-    def callback_url
-      callback_host.to_s + '/' + callback_path.to_s if callback_host
-    end
-    
     def callback_path
       @callback_path ||= "shared_workforce/task_response"
     end
